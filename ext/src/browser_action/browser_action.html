@@ -1,0 +1,32 @@
+<!doctype html>
+<style type="text/css">
+	#mainPopup {
+		padding: 10px;
+		height: 200px;
+		width: 400px;
+		font-family: Helvetica, Ubuntu, Arial, sans-serif;
+	}
+
+	.mno {
+		font-family: Menlo, "DejaVu Sans Mono", monospace;
+	}
+
+	h1 {
+		font-size: 1.7em;
+	}
+</style>
+
+<div id="mainPopup">
+	<h1>Set Custom Video Speed</h1>
+	<div>Use the slider to choose a multiple of the normal video speed. </div>
+	<p>
+		<span class="mno">0.1</span><input name="cys-speedRange" id="cys-speedRange" style="width: 80%;" value="1"
+			type="range" min="0.1" max=8 step="0.1" /><span class="mno">8.0</span>
+	</p>
+	<div>Current Speed (adjust if wrong): <span class="mno" id="cys-speedDiv"></span></div>
+
+</div>
+
+<script src="browser_action.js">
+
+</script>
