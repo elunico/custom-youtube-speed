@@ -15,6 +15,14 @@ chrome.extension.sendMessage({}, function(response) {
             sendRepsonse({ok: true});
           }
         }
+        if (request.from == 'cys' && request.message === 'speed-query') {
+          let video = document.getElementsByTagName('video')[0];
+          if (video) {
+            sendRepsonse({ok: true, 'current-speed': video.playbackRate});
+          } else {
+            sendRepsonse({ok: false, reason: 'No video element found'});
+          }
+        }
       });
 
       console.log('Listener ready!');
