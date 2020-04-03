@@ -3,15 +3,14 @@ let element = document.getElementById('cys-speedRange');
 chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
   chrome.tabs.sendMessage(
       tabs[0].id, {from: 'cys', message: 'speed-query'}, function(response) {
-        if (!response) {
-          throw 'Empty Response!'
-        }
-        if (!response.ok) {
-          throw `Invalid Response! ${response.reason}`;
-        }
-        element.value = Number(response['current-speed'] || 1);
         let d = document.getElementById('cys-speedDiv');
-        d.innerHTML = Number(response['current-speed'] || 1);
+        if (!response || !response.ok) {
+          element.value = 0;
+          d.innerHTML = '&lt;No Video&gt;';
+        } else {
+          element.value = Number(response['current-speed'] || 1);
+          d.innerHTML = Number(response['current-speed'] || 1);
+        }
       });
 });
 
@@ -26,10 +25,10 @@ element.oninput = () => {
         {from: 'cys', message: 'speed-change', speed: element.value},
         function(response) {
           if (!response) {
-            throw 'Empty Response!'
+            console.error('No response');
           }
           if (!response.ok) {
-            throw `Invalid Response! ${response.reason}`;
+            console.error(`Invalid Response! ${response.reason}`);
           }
         });
   });
