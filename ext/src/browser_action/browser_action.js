@@ -29,9 +29,11 @@ for (let button of presetButtons) {
           function(response) {
             if (!response) {
               console.error('No Response');
+              return;
             }
             if (!response.ok) {
               console.error(`Invalid Response! ${response.reason}`);
+              return;
             }
           })
     });
@@ -49,9 +51,11 @@ element.oninput = () => {
         function(response) {
           if (!response) {
             console.error('No response');
+            return;
           }
           if (!response.ok) {
             console.error(`Invalid Response! ${response.reason}`);
+            return;
           }
         });
   });
