@@ -1,5 +1,34 @@
 let element = document.getElementById('cys-speedRange');
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.from = 'cys' && request.message == 'options-loaded') {
+    let speed = Number(request.speed);
+    element.value = speed;
+    let d = document.getElementById('cys-speedDiv');
+    d.innerHTML = `${speed}`;
+    console.log(`UI updated for speed ${speed}`);
+    sendResponse(
+        {ok: true, reason: `Updated UI for speed ${speed}`, speed: speed});
+  }
+});
+
 let presetButtons = document.getElementsByClassName('btn-preset');
+let saveButton = document.getElementById('btn-save-speed');
+
+saveButton.onclick = () => {
+  chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
+    chrome.tabs.sendMessage(
+        tabs[0].id, {from: 'cys', message: 'speed-save'}, function(response) {
+          let d = document.getElementById('save-status');
+          if (response && response.ok) {
+            d.innerHTML = `Saved default speed as ${response.speed}`;
+          } else {
+            d.innerHTML = 'Error could not save!';
+          }
+          setTimeout(() => {d.innerHTML = ''}, 800);
+        });
+  });
+};
 
 chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
   chrome.tabs.sendMessage(

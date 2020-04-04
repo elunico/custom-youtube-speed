@@ -16,6 +16,7 @@
     "default_popup": "src/browser_action/browser_action.html"
   },
   "permissions": [
+    "storage",
     "https://youtube.com/*"
   ],
   "omnibox": {
