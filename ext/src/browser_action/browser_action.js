@@ -7,7 +7,9 @@ chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
         if (!response || !response.ok) {
           element.value = 0;
           d.innerHTML = '&lt;No Video&gt;';
+          element.setAttribute('disabled', 'true');
         } else {
+          element.removeAttribute('disabled');
           element.value = Number(response['current-speed'] || 1);
           d.innerHTML = Number(response['current-speed'] || 1);
         }
