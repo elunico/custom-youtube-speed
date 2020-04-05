@@ -18,11 +18,28 @@ function loadDefault() {
   });
 }
 
+document.addEventListener('keypress', function(event) {
+  let video = document.getElementsByTagName('video')[0];
+  console.log(event);
+  console.log(event.key);
+  if (video) {
+    if (event.key == ']') {
+      video.currentTime += (10 * video.playbackRate);
+    } else if (event.key == '[') {
+      video.currentTime -= (10 * video.playbackRate);
+    } else if (event.key == 'Enter') {
+      video.pause();
+    }
+  }
+});
+
 chrome.extension.sendMessage({}, function(response) {
   var readyStateCheckInterval = setInterval(function() {
     if (document.readyState === 'complete') {
       clearInterval(readyStateCheckInterval);
       loadDefault();
+
+      setHandler();
 
       chrome.runtime.onMessage.addListener(function(
           request, sender, sendRepsonse) {
