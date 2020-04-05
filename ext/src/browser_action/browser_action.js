@@ -64,7 +64,7 @@ for (let button of presetButtons) {
               console.error(`Invalid Response! ${response.reason}`);
               return;
             }
-          })
+          });
     });
   }
 }
