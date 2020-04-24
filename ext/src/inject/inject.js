@@ -61,7 +61,13 @@ function setHandler() {
       } else if (event.key == '-') {
         video.playbackRate -= (event.shiftKey ? 0.05 : 0.1);
         showStatus(video.playbackRate);
-      } else if (event.key == '=' || event.key == '*') {
+      } else if (event.key == '*') {
+        video.playbackRate += (event.shiftKey ? 0.5 : 1);
+        showStatus(video.playbackRate);
+      } else if (event.key == '/') {
+        video.playbackRate -= (event.shiftKey ? 0.5 : 1);
+        showStatus(video.playbackRate);
+      } else if (event.key == '`') {
         video.playbackRate = 1;
         showStatus(video.playbackRate);
       }
