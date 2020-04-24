@@ -1,0 +1,22 @@
+:root {
+    --foreground-color: black;
+    --background-color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --foreground-color: white;
+        --background-color: black;
+    }
+}
+
+.cys-show-status-popup {
+    position: fixed;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+    font-size: large;
+    font-family: sans-serif;
+    left: 50%;
+    top: 10%;
+    padding: 10px;
+}

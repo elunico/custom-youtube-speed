@@ -10,6 +10,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     sendResponse(
       { ok: true, reason: `Updated UI for speed ${speed}`, speed: speed });
   }
+
+
 });
 
 let presetButtons = document.getElementsByClassName('btn-preset');

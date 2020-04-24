@@ -25,12 +25,29 @@ function togglePause(videoElt) {
     videoElt.pause();
   }
 }
+let child;
+let timeout;
+
+function showStatus(status) {
+  if (!child) {
+    child = document.createElement('div');
+    child.classList.add('cys-show-status-popup');
+    document.body.appendChild(child);
+  }
+  if (timeout) {
+    clearTimeout(timeout);
+  }
+  child.removeAttribute('hidden');
+  child.innerHTML = `Speed: ${status.toFixed(2)}`;
+  timeout = setTimeout(() => {
+    child.setAttribute('hidden', true);
+    timeout = null;
+  }, 750);
+}
 
 function setHandler() {
   document.addEventListener('keypress', function (event) {
     let video = document.getElementsByTagName('video')[0];
-    console.log(event);
-    console.log(event.key);
     if (video) {
       if (event.key == ']') {
         video.currentTime += (10 * video.playbackRate);
@@ -38,6 +55,15 @@ function setHandler() {
         video.currentTime -= (10 * video.playbackRate);
       } else if (event.key == 'Enter') {
         togglePause(video);
+      } else if (event.key == '+') {
+        video.playbackRate += (event.shiftKey ? 0.05 : 0.1);
+        showStatus(video.playbackRate);
+      } else if (event.key == '-') {
+        video.playbackRate -= (event.shiftKey ? 0.05 : 0.1);
+        showStatus(video.playbackRate);
+      } else if (event.key == '=' || event.key == '*') {
+        video.playbackRate = 1;
+        showStatus(video.playbackRate);
       }
     }
   });
