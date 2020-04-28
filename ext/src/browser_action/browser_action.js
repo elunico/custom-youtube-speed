@@ -1,7 +1,7 @@
 let element = document.getElementById('cys-speedRange');
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.from = 'cys' && request.message == 'options-loaded') {
+  if (request.from == 'cys' && request.message == 'options-loaded') {
     let speed = Number(request.speed);
     element.value = speed;
     let d = document.getElementById('cys-speedDiv');
