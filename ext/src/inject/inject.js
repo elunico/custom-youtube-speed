@@ -1,20 +1,26 @@
+function toArray(htmlCollection) {
+  return new Array(htmlCollection.length).fill(0).map((ignore, index) => htmlCollection[index]);
+}
+
 function loadDefault() {
   chrome.storage.sync.get({ 'cys-default-speed': 1 }, function (items) {
     let speed = Number(items['cys-default-speed']);
-    let video = document.getElementsByTagName('video')[0];
-    if (video) {
-      video.playbackRate = speed;
-      console.log(`Set speed to loaded default: ${speed}`);
-      chrome.runtime.sendMessage(
-        { message: 'options-loaded', from: 'cys', speed: speed },
-        function (response) {
-          if (response && response.ok) {
-            console.log('UI Updated for loaded options');
-          } else {
-            console.error(response);
-          }
-        });
-    }
+    toArray(document.getElementsByTagName('video')).map((video) => {
+      if (video) {
+        video.playbackRate = speed;
+        console.log(`Set speed to loaded default: ${speed}`);
+        chrome.runtime.sendMessage(
+          { message: 'options-loaded', from: 'cys', speed: speed },
+          function (response) {
+            if (response && response.ok) {
+              console.log('UI Updated for loaded options');
+            }
+            // else {
+            //   console.error(response);
+            // }
+          });
+      }
+    });
   });
 }
 
@@ -47,51 +53,52 @@ function showStatus(status) {
 
 function setHandler() {
   document.addEventListener('keypress', function (event) {
-    let video = document.getElementsByTagName('video')[0];
-    if (video) {
-      if (event.key == ']') {
-        video.currentTime += (10 * video.playbackRate);
-      } else if (event.key == '[') {
-        video.currentTime -= (10 * video.playbackRate);
-      } else if (event.key == 'Enter') {
-        togglePause(video);
-      } else if (event.key == '+') {
-        video.playbackRate += (event.shiftKey ? 0.05 : 0.1);
-        showStatus(video.playbackRate);
-      } else if (event.key == '-') {
-        video.playbackRate -= (event.shiftKey ? 0.05 : 0.1);
-        showStatus(video.playbackRate);
-      } else if (event.key == '*') {
-        video.playbackRate += (event.shiftKey ? 0.5 : 1);
-        showStatus(video.playbackRate);
-      } else if (event.key == '/') {
-        video.playbackRate -= (event.shiftKey ? 0.5 : 1);
-        showStatus(video.playbackRate);
-      } else if (event.key == '`') {
-        video.playbackRate = 1;
-        showStatus(video.playbackRate);
+    toArray(document.getElementsByTagName('video')).map((video) => {
+      if (video) {
+        if (event.key == ']') {
+          video.currentTime += (10 * video.playbackRate);
+        } else if (event.key == '[') {
+          video.currentTime -= (10 * video.playbackRate);
+        } else if (event.key == 'Enter') {
+          togglePause(video);
+        } else if (event.key == '+') {
+          video.playbackRate += (event.shiftKey ? 0.05 : 0.1);
+          showStatus(video.playbackRate);
+        } else if (event.key == '-') {
+          video.playbackRate -= (event.shiftKey ? 0.05 : 0.1);
+          showStatus(video.playbackRate);
+        } else if (event.key == '*') {
+          video.playbackRate += (event.shiftKey ? 0.5 : 1);
+          showStatus(video.playbackRate);
+        } else if (event.key == '/') {
+          video.playbackRate -= (event.shiftKey ? 0.5 : 1);
+          showStatus(video.playbackRate);
+        } else if (event.key == '`') {
+          video.playbackRate = 1;
+          showStatus(video.playbackRate);
+        }
       }
-    }
+    });
   });
 }
 
 chrome.extension.sendMessage({}, function (response) {
+  setHandler();
+
   var readyStateCheckInterval = setInterval(function () {
     if (document.readyState === 'complete') {
       clearInterval(readyStateCheckInterval);
       loadDefault();
 
-      setHandler();
-
       chrome.runtime.onMessage.addListener(function (
         request, sender, sendRepsonse) {
         if (request.from === 'cys' && request.message === 'speed-change') {
           let speed = Number(request.speed);
-          let video = document.getElementsByTagName('video')[0];
-          if (!video) {
+          let videos = document.getElementsByTagName('video');
+          if (!videos) {
             sendRepsonse({ ok: false, reason: 'Video element not found' });
           } else {
-            video.playbackRate = speed;
+            for (let video of videos) video.playbackRate = speed;
             sendRepsonse({ ok: true });
           }
         }
