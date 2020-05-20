@@ -1,6 +1,6 @@
 {
   "name": "Custom YouTube Speed",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "manifest_version": 2,
   "description": "This is just a pet project of mine that I use to make YouTube watching a little better. I cannot guarantee that it will work flawlessly (loading default speed, custom speed values, etc.) on every YouTube video, but it is open source (https://github.com/elunico/custom-youtube-speed) and I am open to suggestions/issues/fixes but no promises about making them happen. This extension was created with the awesome extensionizr.com",
   "homepage_url": "https://github.com/elunico/custom-youtube-speed",
