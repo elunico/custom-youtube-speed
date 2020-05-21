@@ -5,7 +5,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     let speed = Number(request.speed);
     element.value = speed;
     let d = document.getElementById('cys-speedDiv');
-    d.innerHTML = `${speed}`;
+    d.textContent = speed.toFixed(2).toString(); // `${speed}`;
     console.log(`UI updated for speed ${speed}`);
     sendResponse(
       { ok: true, reason: `Updated UI for speed ${speed}`, speed: speed });
@@ -23,9 +23,9 @@ saveButton.onclick = () => {
       tabs[0].id, { from: 'cys', message: 'speed-save' }, function (response) {
         let d = document.getElementById('save-status');
         if (response && response.ok) {
-          d.innerHTML = `Saved default speed as ${response.speed}`;
+          d.textContent = `Saved default speed as ${response.speed}`;
         } else {
-          d.innerHTML = 'Error could not save!';
+          d.textContent = 'Error could not save!';
         }
         setTimeout(() => { d.innerHTML = '' }, 800);
       });
@@ -43,7 +43,7 @@ chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
       } else {
         element.removeAttribute('disabled');
         element.value = Number(response['current-speed'] || 1);
-        d.innerHTML = Number(response['current-speed'] || 1);
+        d.textContent = Number(response['current-speed'] || 1).toFixed(2).toString();
       }
     });
 });
@@ -73,7 +73,7 @@ for (let button of presetButtons) {
 
 element.oninput = () => {
   let d = document.getElementById('cys-speedDiv');
-  d.innerHTML = element.value;
+  d.textContent = element.value;
 
   chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
     chrome.tabs.sendMessage(
