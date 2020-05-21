@@ -2,6 +2,15 @@ function toArray(htmlCollection) {
   return new Array(htmlCollection.length).fill(0).map((ignore, index) => htmlCollection[index]);
 }
 
+let listening = true;
+chrome.storage.sync.get({ 'cys-key-listen': true }, function (items) {
+  if (typeof items['cys-key-listen'] == 'boolean') {
+    listening = items['cys-key-listen'];
+  } else {
+    listening = items['cys-key-listen'] != 'false';
+  }
+})
+
 function loadDefault() {
   chrome.storage.sync.get({ 'cys-default-speed': 1 }, function (items) {
     let speed = Number(items['cys-default-speed']);
@@ -54,27 +63,32 @@ function showStatus(status) {
 function setHandler() {
   document.addEventListener('keypress', function (event) {
     toArray(document.getElementsByTagName('video')).map((video) => {
-      if (video) {
+      if (video && listening) {
         if (event.key == ']') {
           video.currentTime += (10 * video.playbackRate);
         } else if (event.key == '[') {
           video.currentTime -= (10 * video.playbackRate);
         } else if (event.key == 'Enter') {
           togglePause(video);
-        } else if (event.key == '+') {
-          video.playbackRate += (event.shiftKey ? 0.05 : 0.1);
-          showStatus(video.playbackRate);
-        } else if (event.key == '-') {
-          video.playbackRate -= (event.shiftKey ? 0.05 : 0.1);
-          showStatus(video.playbackRate);
-        } else if (event.key == '*') {
-          video.playbackRate += (event.shiftKey ? 0.5 : 1);
-          showStatus(video.playbackRate);
-        } else if (event.key == '/') {
-          video.playbackRate -= (event.shiftKey ? 0.5 : 1);
-          showStatus(video.playbackRate);
         } else if (event.key == '`') {
           video.playbackRate = 1;
+          showStatus(video.playbackRate);
+        }
+
+        if (['+', '-', '*', '/'].includes(event.key)) {
+          let rateChange = 0;
+          if (event.key == '+') {
+            rateChange = +(event.shiftKey ? 0.05 : 0.1);
+          } else if (event.key == '-') {
+            rateChange = -(event.shiftKey ? 0.05 : 0.1);
+          } else if (event.key == '*') {
+            rateChange = +(event.shiftKey ? 0.5 : 1);
+          } else if (event.key == '/') {
+            rateChange = -(event.shiftKey ? 0.5 : 1);
+          }
+          if (((video.playbackRate + rateChange) <= 8.0) && ((video.playbackRate + rateChange) >= 0.1)) {
+            video.playbackRate += rateChange;
+          }
           showStatus(video.playbackRate);
         }
       }
@@ -92,6 +106,18 @@ chrome.extension.sendMessage({}, function (response) {
 
       chrome.runtime.onMessage.addListener(function (
         request, sender, sendRepsonse) {
+        if (request.from === 'cys' && request.message === 'is-listening') {
+          sendRepsonse({ status: 'ok', listening: listening, message: 'Listening status' });
+        }
+        if (request.from === 'cys' && request.message === 'toggle-listening') {
+          listening = !listening;
+          // already negated
+          chrome.storage.sync.set({ 'cys-key-listen': listening }, function () {
+            console.log("Toggled keylistening");
+            sendRepsonse({ status: 'ok', listening: listening, message: 'Toggled listening' })
+          });
+          return true;
+        }
         if (request.from === 'cys' && request.message === 'speed-change') {
           let speed = Number(request.speed);
           let videos = document.getElementsByTagName('video');

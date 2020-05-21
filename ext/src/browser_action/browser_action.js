@@ -16,6 +16,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 let presetButtons = document.getElementsByClassName('btn-preset');
 let saveButton = document.getElementById('btn-save-speed');
+let disableKeysButton = document.getElementById('btn-disable-keys');
 
 saveButton.onclick = () => {
   chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
@@ -31,6 +32,28 @@ saveButton.onclick = () => {
       });
   });
 };
+
+chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+  let tab = tabs[0];
+  chrome.tabs.sendMessage(tab.id, { from: 'cys', message: 'is-listening' }, function (response) {
+    if (response) {
+      let listening = response.listening;
+      disableKeysButton.value = `${listening ? 'Disable' : 'Enable'} keyboard controls`;
+    }
+  });
+});
+
+disableKeysButton.onclick = () => {
+  chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+    let tab = tabs[0];
+    chrome.tabs.sendMessage(tab.id, { from: 'cys', message: 'toggle-listening' }, function (response) {
+      if (response) {
+        let listening = response.listening;
+        disableKeysButton.value = `${listening ? 'Disable' : 'Enable'} keyboard controls`;
+      }
+    });
+  });
+}
 
 chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
   chrome.tabs.sendMessage(
