@@ -1,0 +1,43 @@
+{
+  "name": "Custom YouTube Speed",
+  "version": "4.1.0",
+  "manifest_version": 2,
+  "description": "Let's you change the speed of YouTube videos by increments of 0.1 (instead of 0.25) from 0.1 up to 8.0 (instead of 0.25 to 2.0)",
+  "homepage_url": "https://github.com/elunico/custom-youtube-speed",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "browser_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "Customize YouTube Speed",
+    "default_popup": "src/browser_action/browser_action.html"
+  },
+  "permissions": [
+    "storage",
+    "https://youtube.com/*"
+  ],
+  "omnibox": {
+    "keyword": "cytspeed"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.youtube.com/*"
+      ],
+      "js": [
+        "src/inject/inject.js"
+      ],
+      "css": [
+        "src/inject/inject.css"
+      ]
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{3109f42e-d84e-4b4c-a3ef-43b3a00ad8a7}"
+    }
+  }
+}
