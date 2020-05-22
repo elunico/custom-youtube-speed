@@ -53,7 +53,7 @@ function showStatus(status) {
     clearTimeout(timeout);
   }
   child.removeAttribute('hidden');
-  child.innerHTML = `Speed: ${status.toFixed(2)}`;
+  child.textContent = `Speed: ${status.toFixed(2)}`;
   timeout = setTimeout(() => {
     child.setAttribute('hidden', true);
     timeout = null;

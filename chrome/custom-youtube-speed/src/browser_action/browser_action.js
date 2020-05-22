@@ -61,7 +61,7 @@ chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
       let d = document.getElementById('cys-speedDiv');
       if (!response || !response.ok) {
         element.value = 0;
-        d.innerHTML = '&lt;No Video&gt;';
+        d.textContent = '<No Video>';
         element.setAttribute('disabled', 'true');
       } else {
         element.removeAttribute('disabled');

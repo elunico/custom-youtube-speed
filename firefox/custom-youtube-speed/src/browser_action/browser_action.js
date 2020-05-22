@@ -75,7 +75,7 @@ for (let button of presetButtons) {
   button.onclick = () => {
     let btnValue = Number(button.value.substring(0, button.value.length - 1));
     let d = document.getElementById('cys-speedDiv');
-    d.innerHTML = button.value;
+    d.textContent = button.value;
     element.value = btnValue;
     chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
       chrome.tabs.sendMessage(
