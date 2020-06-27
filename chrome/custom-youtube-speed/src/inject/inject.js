@@ -2,6 +2,7 @@ function toArray(htmlCollection) {
   return new Array(htmlCollection.length).fill(0).map((ignore, index) => htmlCollection[index]);
 }
 
+let speedSetting = 1.0;
 let listening = true;
 chrome.storage.sync.get({ 'cys-key-listen': true }, function (items) {
   if (typeof items['cys-key-listen'] == 'boolean') {
@@ -14,6 +15,7 @@ chrome.storage.sync.get({ 'cys-key-listen': true }, function (items) {
 function loadDefault() {
   chrome.storage.sync.get({ 'cys-default-speed': 1 }, function (items) {
     let speed = Number(items['cys-default-speed']);
+    speedSetting = speed;
     toArray(document.getElementsByTagName('video')).map((video) => {
       if (video) {
         video.playbackRate = speed;
@@ -30,6 +32,13 @@ function loadDefault() {
           });
       }
     });
+    setInterval(() => {
+      toArray(document.getElementsByTagName('video')).map((video) => {
+        if (video) {
+          video.playbackRate = speedSetting;
+        }
+      });
+    }, 350);
   });
 }
 
@@ -89,6 +98,7 @@ function setHandler() {
           if (((video.playbackRate + rateChange) <= 8.0) && ((video.playbackRate + rateChange) >= 0.1)) {
             video.playbackRate += rateChange;
           }
+          speedSetting = video.playbackRate;
           showStatus(video.playbackRate);
         }
       }
@@ -120,6 +130,7 @@ chrome.extension.sendMessage({}, function (response) {
         }
         if (request.from === 'cys' && request.message === 'speed-change') {
           let speed = Number(request.speed);
+          speedSetting = speed;
           let videos = document.getElementsByTagName('video');
           if (!videos) {
             sendRepsonse({ ok: false, reason: 'Video element not found' });
