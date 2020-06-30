@@ -24,7 +24,7 @@ saveButton.onclick = () => {
       tabs[0].id, { from: 'cys', message: 'speed-save' }, function (response) {
         let d = document.getElementById('save-status');
         if (response && response.ok) {
-          d.textContent = `Saved default speed as ${response.speed}`;
+          d.textContent = `Saved default speed as ${response.speed.toFixed(2)}`;
         } else {
           d.textContent = 'Error could not save!';
         }
