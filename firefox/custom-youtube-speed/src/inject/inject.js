@@ -82,6 +82,7 @@ function setHandler() {
         } else if (event.key == 'Enter') {
           togglePause(video);
         } else if (event.key == '`') {
+          speedSetting = 1;
           video.playbackRate = 1;
           showStatus(video.playbackRate);
         }
