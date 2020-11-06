@@ -1,0 +1,518 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DCDA0355255617BB00329A6C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA0354255617BB00329A6C /* AppDelegate.swift */; };
+		DCDA0358255617BB00329A6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCDA0356255617BB00329A6C /* Main.storyboard */; };
+		DCDA035A255617BB00329A6C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA0359255617BB00329A6C /* ViewController.swift */; };
+		DCDA035C255617BC00329A6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCDA035B255617BC00329A6C /* Assets.xcassets */; };
+		DCDA0363255617BC00329A6C /* Custom YouTube Speed Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DCDA0362255617BC00329A6C /* Custom YouTube Speed Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		DCDA0368255617BC00329A6C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCDA0367255617BC00329A6C /* Cocoa.framework */; };
+		DCDA036B255617BC00329A6C /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCDA036A255617BC00329A6C /* SafariWebExtensionHandler.swift */; };
+		DCDA037D255617BC00329A6C /* Custom YouTube Speed in Resources */ = {isa = PBXBuildFile; fileRef = DCDA0378255617BC00329A6C /* Custom YouTube Speed */; };
+		DCDA037E255617BC00329A6C /* icons in Resources */ = {isa = PBXBuildFile; fileRef = DCDA0379255617BC00329A6C /* icons */; };
+		DCDA037F255617BC00329A6C /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = DCDA037A255617BC00329A6C /* manifest.json */; };
+		DCDA0380255617BC00329A6C /* _locales in Resources */ = {isa = PBXBuildFile; fileRef = DCDA037B255617BC00329A6C /* _locales */; };
+		DCDA0381255617BC00329A6C /* src in Resources */ = {isa = PBXBuildFile; fileRef = DCDA037C255617BC00329A6C /* src */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DCDA0364255617BC00329A6C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DCDA0348255617BB00329A6C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DCDA0361255617BC00329A6C;
+			remoteInfo = "Custom YouTube Speed Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DCDA0373255617BC00329A6C /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				DCDA0363255617BC00329A6C /* Custom YouTube Speed Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		DCDA0350255617BB00329A6C /* Custom YouTube Speed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Custom YouTube Speed.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCDA0353255617BB00329A6C /* Custom_YouTube_Speed.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Custom_YouTube_Speed.entitlements; sourceTree = "<group>"; };
+		DCDA0354255617BB00329A6C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		DCDA0357255617BB00329A6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DCDA0359255617BB00329A6C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DCDA035B255617BC00329A6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		DCDA035D255617BC00329A6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCDA0362255617BC00329A6C /* Custom YouTube Speed Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Custom YouTube Speed Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCDA0367255617BC00329A6C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		DCDA036A255617BC00329A6C /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		DCDA036C255617BC00329A6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCDA036D255617BC00329A6C /* Custom_YouTube_Speed_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Custom_YouTube_Speed_Extension.entitlements; sourceTree = "<group>"; };
+		DCDA0378255617BC00329A6C /* Custom YouTube Speed */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Custom YouTube Speed"; sourceTree = SOURCE_ROOT; };
+		DCDA0379255617BC00329A6C /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = ../../icons; sourceTree = "<group>"; };
+		DCDA037A255617BC00329A6C /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../manifest.json; sourceTree = "<group>"; };
+		DCDA037B255617BC00329A6C /* _locales */ = {isa = PBXFileReference; lastKnownFileType = folder; name = _locales; path = ../../_locales; sourceTree = "<group>"; };
+		DCDA037C255617BC00329A6C /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../src; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DCDA034D255617BB00329A6C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCDA035F255617BC00329A6C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCDA0368255617BC00329A6C /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DCDA0347255617BB00329A6C = {
+			isa = PBXGroup;
+			children = (
+				DCDA0352255617BB00329A6C /* Custom YouTube Speed */,
+				DCDA0369255617BC00329A6C /* Custom YouTube Speed Extension */,
+				DCDA0366255617BC00329A6C /* Frameworks */,
+				DCDA0351255617BB00329A6C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DCDA0351255617BB00329A6C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DCDA0350255617BB00329A6C /* Custom YouTube Speed.app */,
+				DCDA0362255617BC00329A6C /* Custom YouTube Speed Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DCDA0352255617BB00329A6C /* Custom YouTube Speed */ = {
+			isa = PBXGroup;
+			children = (
+				DCDA0353255617BB00329A6C /* Custom_YouTube_Speed.entitlements */,
+				DCDA0354255617BB00329A6C /* AppDelegate.swift */,
+				DCDA0356255617BB00329A6C /* Main.storyboard */,
+				DCDA0359255617BB00329A6C /* ViewController.swift */,
+				DCDA035B255617BC00329A6C /* Assets.xcassets */,
+				DCDA035D255617BC00329A6C /* Info.plist */,
+			);
+			path = "Custom YouTube Speed";
+			sourceTree = "<group>";
+		};
+		DCDA0366255617BC00329A6C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DCDA0367255617BC00329A6C /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DCDA0369255617BC00329A6C /* Custom YouTube Speed Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DCDA0377255617BC00329A6C /* Resources */,
+				DCDA036A255617BC00329A6C /* SafariWebExtensionHandler.swift */,
+				DCDA036C255617BC00329A6C /* Info.plist */,
+				DCDA036D255617BC00329A6C /* Custom_YouTube_Speed_Extension.entitlements */,
+			);
+			path = "Custom YouTube Speed Extension";
+			sourceTree = "<group>";
+		};
+		DCDA0377255617BC00329A6C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DCDA0378255617BC00329A6C /* Custom YouTube Speed */,
+				DCDA0379255617BC00329A6C /* icons */,
+				DCDA037A255617BC00329A6C /* manifest.json */,
+				DCDA037B255617BC00329A6C /* _locales */,
+				DCDA037C255617BC00329A6C /* src */,
+			);
+			name = Resources;
+			path = "Custom YouTube Speed Extension";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DCDA034F255617BB00329A6C /* Custom YouTube Speed */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCDA0374255617BC00329A6C /* Build configuration list for PBXNativeTarget "Custom YouTube Speed" */;
+			buildPhases = (
+				DCDA034C255617BB00329A6C /* Sources */,
+				DCDA034D255617BB00329A6C /* Frameworks */,
+				DCDA034E255617BB00329A6C /* Resources */,
+				DCDA0373255617BC00329A6C /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DCDA0365255617BC00329A6C /* PBXTargetDependency */,
+			);
+			name = "Custom YouTube Speed";
+			productName = "Custom YouTube Speed";
+			productReference = DCDA0350255617BB00329A6C /* Custom YouTube Speed.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DCDA0361255617BC00329A6C /* Custom YouTube Speed Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DCDA0370255617BC00329A6C /* Build configuration list for PBXNativeTarget "Custom YouTube Speed Extension" */;
+			buildPhases = (
+				DCDA035E255617BC00329A6C /* Sources */,
+				DCDA035F255617BC00329A6C /* Frameworks */,
+				DCDA0360255617BC00329A6C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Custom YouTube Speed Extension";
+			productName = "Custom YouTube Speed Extension";
+			productReference = DCDA0362255617BC00329A6C /* Custom YouTube Speed Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DCDA0348255617BB00329A6C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1210;
+				LastUpgradeCheck = 1210;
+				TargetAttributes = {
+					DCDA034F255617BB00329A6C = {
+						CreatedOnToolsVersion = 12.1;
+					};
+					DCDA0361255617BC00329A6C = {
+						CreatedOnToolsVersion = 12.1;
+					};
+				};
+			};
+			buildConfigurationList = DCDA034B255617BB00329A6C /* Build configuration list for PBXProject "Custom YouTube Speed" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DCDA0347255617BB00329A6C;
+			productRefGroup = DCDA0351255617BB00329A6C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DCDA034F255617BB00329A6C /* Custom YouTube Speed */,
+				DCDA0361255617BC00329A6C /* Custom YouTube Speed Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DCDA034E255617BB00329A6C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCDA035C255617BC00329A6C /* Assets.xcassets in Resources */,
+				DCDA0358255617BB00329A6C /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCDA0360255617BC00329A6C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCDA037D255617BC00329A6C /* Custom YouTube Speed in Resources */,
+				DCDA037F255617BC00329A6C /* manifest.json in Resources */,
+				DCDA0380255617BC00329A6C /* _locales in Resources */,
+				DCDA037E255617BC00329A6C /* icons in Resources */,
+				DCDA0381255617BC00329A6C /* src in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DCDA034C255617BB00329A6C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCDA035A255617BB00329A6C /* ViewController.swift in Sources */,
+				DCDA0355255617BB00329A6C /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DCDA035E255617BC00329A6C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DCDA036B255617BC00329A6C /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DCDA0365255617BC00329A6C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DCDA0361255617BC00329A6C /* Custom YouTube Speed Extension */;
+			targetProxy = DCDA0364255617BC00329A6C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DCDA0356255617BB00329A6C /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DCDA0357255617BB00329A6C /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DCDA036E255617BC00329A6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		DCDA036F255617BC00329A6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		DCDA0371255617BC00329A6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Custom YouTube Speed Extension/Custom_YouTube_Speed_Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Custom YouTube Speed Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tom.Custom-YouTube-Speed-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		DCDA0372255617BC00329A6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Custom YouTube Speed Extension/Custom_YouTube_Speed_Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Custom YouTube Speed Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tom.Custom-YouTube-Speed-Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		DCDA0375255617BC00329A6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Custom YouTube Speed/Custom_YouTube_Speed.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Custom YouTube Speed/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tom.Custom-YouTube-Speed";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		DCDA0376255617BC00329A6C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Custom YouTube Speed/Custom_YouTube_Speed.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Custom YouTube Speed/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.tom.Custom-YouTube-Speed";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DCDA034B255617BB00329A6C /* Build configuration list for PBXProject "Custom YouTube Speed" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCDA036E255617BC00329A6C /* Debug */,
+				DCDA036F255617BC00329A6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCDA0370255617BC00329A6C /* Build configuration list for PBXNativeTarget "Custom YouTube Speed Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCDA0371255617BC00329A6C /* Debug */,
+				DCDA0372255617BC00329A6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DCDA0374255617BC00329A6C /* Build configuration list for PBXNativeTarget "Custom YouTube Speed" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DCDA0375255617BC00329A6C /* Debug */,
+				DCDA0376255617BC00329A6C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DCDA0348255617BB00329A6C /* Project object */;
+}
