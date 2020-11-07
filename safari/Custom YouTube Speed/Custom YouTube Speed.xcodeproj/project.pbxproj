@@ -58,11 +58,11 @@
 		DCDA036A255617BC00329A6C /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
 		DCDA036C255617BC00329A6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DCDA036D255617BC00329A6C /* Custom_YouTube_Speed_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Custom_YouTube_Speed_Extension.entitlements; sourceTree = "<group>"; };
-		DCDA0378255617BC00329A6C /* Custom YouTube Speed */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Custom YouTube Speed"; sourceTree = SOURCE_ROOT; };
-		DCDA0379255617BC00329A6C /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = ../../icons; sourceTree = "<group>"; };
-		DCDA037A255617BC00329A6C /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../manifest.json; sourceTree = "<group>"; };
-		DCDA037B255617BC00329A6C /* _locales */ = {isa = PBXFileReference; lastKnownFileType = folder; name = _locales; path = ../../_locales; sourceTree = "<group>"; };
-		DCDA037C255617BC00329A6C /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../src; sourceTree = "<group>"; };
+		DCDA0378255617BC00329A6C /* Custom YouTube Speed */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Custom YouTube Speed"; sourceTree = SOURCE_ROOT; };
+		DCDA0379255617BC00329A6C /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = icons; sourceTree = "<group>"; };
+		DCDA037A255617BC00329A6C /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = manifest.json; sourceTree = "<group>"; };
+		DCDA037B255617BC00329A6C /* _locales */ = {isa = PBXFileReference; lastKnownFileType = folder; path = _locales; sourceTree = "<group>"; };
+		DCDA037C255617BC00329A6C /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = "/Users/thomaspovinelli/Coding/custom-youtube-speed/safari/Custom YouTube Speed/Custom YouTube Speed Extension/src"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

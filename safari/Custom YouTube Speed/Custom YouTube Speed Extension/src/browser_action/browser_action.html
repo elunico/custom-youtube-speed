@@ -1,0 +1,46 @@
+<!doctype html>
+<style type="text/css">
+	#mainPopup {
+		padding: 10px;
+		height: 250px;
+		width: 400px;
+		font-family: "Helvetica Neue", "Helvetica", "Segoe UI", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	}
+
+	.mno {
+		font-family: Menlo, "DejaVu Sans Mono", Monaco, monospace;
+		font-size: 0.97em;
+	}
+
+	h1 {
+		font-size: 1.5em;
+
+	}
+</style>
+
+<div id="mainPopup">
+	<h1>Custom YouTube Speed</h1>
+	<div>Use the slider to choose a multiple of the normal video speed, or choose a preset</div>
+	<p>
+		<input type="button" style="width: 13%" class="btn-preset" value="1x" />
+		<input type="button" style="width: 13%" class="btn-preset" value="2x" />
+		<input type="button" style="width: 13%" class="btn-preset" value="2.25x" />
+		<input type="button" style="width: 13%" class="btn-preset" value="2.5x" />
+		<input type="button" style="width: 13%" class="btn-preset" value="2.75x" />
+		<input type="button" style="width: 13%" class="btn-preset" value="3x" />
+		<input type="button" style="width: 13%" class="btn-preset" value="3.5x" />
+	</p>
+	<p>
+		<span class="mno">0.1</span><input name="cys-speedRange" id="cys-speedRange" style="width: 80%;" type="range"
+			min="0.1" max=8 step="0.1" /><span class="mno">8.0</span>
+	</p>
+	<div>Current Speed: <span class="mno" id="cys-speedDiv"></span></div>
+	<p><input type="button" id="btn-save-speed" value="Set current speed as default" /> </p>
+	<p><input type="button" id="btn-disable-keys" value="Disable keyboard controls" /> </p>
+	<p id="save-status"></p>
+
+</div>
+
+<script src="browser_action.js">
+
+</script>
