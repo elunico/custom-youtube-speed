@@ -49,7 +49,7 @@ changePresetButton.onclick = function () {
 
   showingChangePreset = true;
   let container = document.getElementById('mainPopup');
-  container.style.setProperty('height', '450px');
+  container.style.setProperty('height', '400px');
 
   let optionArea = document.getElementById('edit-preset-span');
   optionArea.removeAttribute('hidden');
