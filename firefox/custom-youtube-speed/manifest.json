@@ -1,8 +1,8 @@
 {
   "name": "Custom YouTube Speed",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "manifest_version": 2,
-  "description": "Let's you change the speed of YouTube videos by increments of 0.1 (instead of 0.25) from 0.1 up to 8.0 (instead of 0.25 to 2.0)",
+  "description": "Let's you change the current and default speed of YouTube videos by increments of 0.1 from 0.1 up to 8.0 using sliders, buttons, and optionally the keyboard",
   "homepage_url": "https://github.com/elunico/custom-youtube-speed",
   "icons": {
     "16": "icons/icon16.png",

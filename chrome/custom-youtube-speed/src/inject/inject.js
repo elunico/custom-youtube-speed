@@ -2,26 +2,47 @@ function toArray(htmlCollection) {
   return new Array(htmlCollection.length).fill(0).map((ignore, index) => htmlCollection[index]);
 }
 
+const defaultPresets = ['1', '2', '2.25', '2.5', '2.75', '3', '3.5'];
+
 let speedSetting = 1.0;
 let listening = true;
-chrome.storage.sync.get({ 'cys-key-listen': true }, function (items) {
+chrome.storage.sync.get({
+  'cys-key-listen': true
+}, function (items) {
   if (typeof items['cys-key-listen'] == 'boolean') {
     listening = items['cys-key-listen'];
   } else {
     listening = items['cys-key-listen'] != 'false';
   }
-})
+});
+
+chrome.storage.sync.get({
+  'cys-user-presets': defaultPresets
+}, function (items) {
+  chrome.extension.sendMessage({
+    message: 'user-presets-load',
+    presets: items,
+    from: 'cys'
+  }, function (response) {
+    console.log(response);
+  })
+});
 
 function loadDefault() {
-  chrome.storage.sync.get({ 'cys-default-speed': 1 }, function (items) {
+  chrome.storage.sync.get({
+    'cys-default-speed': 1
+  }, function (items) {
     let speed = Number(items['cys-default-speed']);
     speedSetting = speed;
     toArray(document.getElementsByTagName('video')).map((video) => {
       if (video) {
         video.playbackRate = speed;
         console.log(`Set speed to loaded default: ${speed}`);
-        chrome.runtime.sendMessage(
-          { message: 'options-loaded', from: 'cys', speed: speed },
+        chrome.runtime.sendMessage({
+            message: 'options-loaded',
+            from: 'cys',
+            speed: speed
+          },
           function (response) {
             if (response && response.ok) {
               console.log('UI Updated for loaded options');
@@ -118,14 +139,24 @@ chrome.extension.sendMessage({}, function (response) {
       chrome.runtime.onMessage.addListener(function (
         request, sender, sendRepsonse) {
         if (request.from === 'cys' && request.message === 'is-listening') {
-          sendRepsonse({ status: 'ok', listening: listening, message: 'Listening status' });
+          sendRepsonse({
+            status: 'ok',
+            listening: listening,
+            message: 'Listening status'
+          });
         }
         if (request.from === 'cys' && request.message === 'toggle-listening') {
           listening = !listening;
           // already negated
-          chrome.storage.sync.set({ 'cys-key-listen': listening }, function () {
+          chrome.storage.sync.set({
+            'cys-key-listen': listening
+          }, function () {
             console.log("Toggled keylistening");
-            sendRepsonse({ status: 'ok', listening: listening, message: 'Toggled listening' })
+            sendRepsonse({
+              status: 'ok',
+              listening: listening,
+              message: 'Toggled listening'
+            })
           });
           return true;
         }
@@ -134,28 +165,66 @@ chrome.extension.sendMessage({}, function (response) {
           speedSetting = speed;
           let videos = document.getElementsByTagName('video');
           if (!videos) {
-            sendRepsonse({ ok: false, reason: 'Video element not found' });
+            sendRepsonse({
+              ok: false,
+              reason: 'Video element not found'
+            });
           } else {
             for (let video of videos) video.playbackRate = speed;
-            sendRepsonse({ ok: true });
+            sendRepsonse({
+              ok: true
+            });
           }
         }
         if (request.from === 'cys' && request.message === 'speed-query') {
           let video = document.getElementsByTagName('video')[0];
           if (video) {
-            sendRepsonse({ ok: true, 'current-speed': video.playbackRate });
+            sendRepsonse({
+              ok: true,
+              'current-speed': video.playbackRate
+            });
           } else {
-            sendRepsonse({ ok: false, reason: 'No video element found' });
+            sendRepsonse({
+              ok: false,
+              reason: 'No video element found'
+            });
           }
+        }
+        if (request.from === 'cys' && request.message === 'presets-query') {
+          chrome.storage.sync.get({
+            'cys-user-presets': ['1', '2', '2.25', '2.5', '2.75', '3', '3.5']
+          }, function (items) {
+            sendRepsonse({
+              presets: items['cys-user-presets']
+            });
+          });
+          return true;
         }
         if (request.from === 'cys' && request.message === 'speed-save') {
           let speed = document.getElementsByTagName('video')[0].playbackRate;
           console.log('Attempting save');
-          chrome.storage.sync.set(
-            { 'cys-default-speed': Number(speed) }, function () {
-              console.log('Sending response');
-              sendRepsonse({ ok: true, speed: speed });
+          chrome.storage.sync.set({
+            'cys-default-speed': Number(speed)
+          }, function () {
+            console.log('Sending response');
+            sendRepsonse({
+              ok: true,
+              speed: speed
             });
+          });
+          return true;
+        }
+        if (request.from === 'cys' && request.message === 'update-presets') {
+          console.log("Saving presets");
+          console.log(request.presets);
+          chrome.storage.sync.set({
+            'cys-user-presets': request.presets
+          }, function () {
+            sendRepsonse({
+              ok: true,
+              presets: request.presets
+            });
+          });
           return true;
         }
       });

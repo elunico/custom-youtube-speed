@@ -2,7 +2,8 @@
 <style type="text/css">
 	#mainPopup {
 		padding: 10px;
-		width: 95%;
+		height: 350px;
+		width: 400px;
 		font-family: "Helvetica Neue", "Helvetica", "Segoe UI", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	}
 
@@ -13,15 +14,20 @@
 
 	h1 {
 		font-size: 1.5em;
-
 	}
 
-	.btn-preset {
-		font-size: 95%;
+	input {
+		font-family: "Helvetica Neue", "Helvetica", "Segoe UI", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	}
 
-	.btn-action {
-		font-size: 95%;
+
+	.bottom-buttons {
+		display: flex;
+	}
+
+	.bottom-buttons > input {
+		width: 50%;
+		margin: 5px;
 	}
 </style>
 
@@ -38,12 +44,33 @@
 		<input type="button" style="width: 13%" class="btn-preset" value="3.5x" />
 	</p>
 	<p>
+		<input type="button" style="width: 60%; text-align: center;" id="change-presets-button" value="Change preset buttons" />
+		<div id="edit-preset-span" hidden>
+			<div>
+				Enter the value you wish to have easily accessible in each button in the text fields below.
+				Be sure to only use a number such as 1.12 or 2.0 or 3.
+			</div>
+			<input type="number" style="width: 10%" class="preset-field" id="preset-field-1" />
+			<input type="number" style="width: 10%" class="preset-field" id="preset-field-2" />
+			<input type="number" style="width: 10%" class="preset-field" id="preset-field-3" />
+			<input type="number" style="width: 10%" class="preset-field" id="preset-field-4" />
+			<input type="number" style="width: 10%" class="preset-field" id="preset-field-5" />
+			<input type="number" style="width: 10%" class="preset-field" id="preset-field-6" />
+			<input type="number" style="width: 10%" class="preset-field" id="preset-field-7" />
+			<p>
+				<input type="button" style="width: 60%; text-align: center;" id="submit-presets" value="Change Presets">
+			</p>
+		</div>
+	</p>
+	<p>
 		<span class="mno">0.1</span><input name="cys-speedRange" id="cys-speedRange" style="width: 80%;" type="range"
 			min="0.1" max=8 step="0.1" /><span class="mno">8.0</span>
 	</p>
 	<div>Current Speed: <span class="mno" id="cys-speedDiv"></span></div>
-	<p><input class="btn-action" type="button" id="btn-save-speed" value="Set current speed as default" /> </p>
-	<p><input class="btn-action" type="button" id="btn-disable-keys" value="Disable keyboard controls" /> </p>
+	<p class="bottom-buttons">
+		<input type="button" id="btn-save-speed" style="width: 45%; text-align: center;" value="Set this speed as default" />
+		<input type="button" id="btn-disable-keys" style="width: 45%; text-align: center;"  value="Disable keyboard controls" />
+	</p>
 	<p id="save-status"></p>
 
 </div>
