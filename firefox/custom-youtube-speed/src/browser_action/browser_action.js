@@ -71,7 +71,7 @@ submitPresetsButton.onclick = function () {
   }
 
   let container = document.getElementById('mainPopup');
-  container.style.setProperty('height', '300px');
+  container.style.setProperty('height', '350px');
 
   let optionArea = document.getElementById('edit-preset-span');
   optionArea.setAttribute('hidden', true);
