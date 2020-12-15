@@ -186,6 +186,9 @@ chrome.tabs.query({
       message: 'presets-query'
     },
     function (response) {
+      if (!response) {
+        return ;
+      }
       const {
         presets
       } = response;
