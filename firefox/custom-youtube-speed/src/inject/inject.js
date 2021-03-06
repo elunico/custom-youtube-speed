@@ -4,6 +4,35 @@ function toArray(htmlCollection) {
 
 const defaultPresets = ['1', '2', '2.25', '2.5', '2.75', '3', '3.5'];
 
+const defaultOptions = {
+  'skip-forward': 93,
+  'skip-backward': 91,
+  'speed-up': 43,
+  'slow-down': 45,
+  'big-speed-up': 42,
+  'big-slow-down': 47,
+  'speed-modifier': 16,
+  'reset-speed': 96,
+  'pause': 13
+}
+
+const optionsDescriptions = {
+  'skip-forward': 'Skip forward in video',
+  'skip-backward': 'Skip backward in video',
+  'speed-up': 'Speed up by <code>0.1x</code>',
+  'slow-down': 'Slow down by <code>0.1x</code>',
+  'big-speed-up': 'Speed up by <code>1.0x</code>',
+  'big-slow-down': 'Slow down by <code>1.0x</code>',
+  'speed-modifier': 'Multiplies all speed increments by <code>1/2</code>',
+  'reset-speed': 'Set speed to <code>1.0x</code>',
+  'pause': 'Start and stop the video'
+}
+
+function killEvent(event) {
+  event.stopImmediatePropagation();
+  event.preventDefault()
+}
+
 let speedSetting = 1.0;
 let listening = true;
 browser.storage.sync.get({
@@ -92,41 +121,75 @@ function showStatus(status) {
   }, 750);
 }
 
+const isupper = code => code >= 65 && code <= 90;
+const islower = code => code >= 97 && code <= 122;
+
+function isalpha(code) {
+  return islower(code) || isupper(code);
+}
+
+function keybind_matches(event, code) {
+  if (event.keyCode == code) {
+    return true
+  }
+  if (islower(code)) {
+    return event.keyCode == code || event.keyCode == (code - 32);
+  } else if (isupper(code)) {
+    return event.keyCode == code || event.keyCode == (code + 32);
+  }
+  return false;
+}
+
+let bindings;
+get_user_settings().then(settings => bindings = settings);
+
 function setHandler() {
   document.addEventListener('keypress', function (event) {
     toArray(document.getElementsByTagName('video')).map((video) => {
+
+      // todo: prevent default in async is maybe not going to work
+
+      if (!bindings) bindings = defaultOptions;
+      console.log(event.keyCode);
       if (video && listening) {
-        if (event.key == ']') {
+        if (keybind_matches(event, Number(bindings['skip-forward']))) {
           video.currentTime += (10 * video.playbackRate);
-        } else if (event.key == '[') {
+          killEvent(event);
+        } else if (keybind_matches(event, Number(bindings['skip-backward']))) {
           video.currentTime -= (10 * video.playbackRate);
-        } else if (event.key == 'Enter') {
+          killEvent(event);
+        } else if (keybind_matches(event, Number(bindings['pause']))) {
           togglePause(video);
-        } else if (event.key == '`') {
+          killEvent(event);
+        } else if (keybind_matches(event, Number(bindings['reset-speed']))) {
           speedSetting = 1;
           video.playbackRate = 1;
           showStatus(video.playbackRate);
+          killEvent(event);
         }
 
-        if (['+', '-', '*', '/'].includes(event.key)) {
-          let rateChange = 0;
-          if (event.key == '+') {
-            rateChange = +(event.shiftKey ? 0.05 : 0.1);
-          } else if (event.key == '-') {
-            rateChange = -(event.shiftKey ? 0.05 : 0.1);
-          } else if (event.key == '*') {
-            rateChange = +(event.shiftKey ? 0.5 : 1);
-          } else if (event.key == '/') {
-            rateChange = -(event.shiftKey ? 0.5 : 1);
-          }
+        let rateChange = 0;
+        if (keybind_matches(event, bindings['speed-up'])) {
+          rateChange = +(event.shiftKey ? 0.05 : 0.1);
+        } else if (keybind_matches(event, bindings['slow-down'])) {
+          rateChange = -(event.shiftKey ? 0.05 : 0.1);
+        } else if (keybind_matches(event, bindings['big-speed-up'])) {
+          rateChange = +(event.shiftKey ? 0.5 : 1);
+        } else if (keybind_matches(event, bindings['big-slow-down'])) {
+          rateChange = -(event.shiftKey ? 0.5 : 1);
+        }
+        if (rateChange != 0) {
           if (((video.playbackRate + rateChange) <= 8.0) && ((video.playbackRate + rateChange) >= 0.1)) {
             video.playbackRate += rateChange;
+            speedSetting = video.playbackRate;
           }
-          speedSetting = video.playbackRate;
+          killEvent(event);
           showStatus(video.playbackRate);
         }
       }
     });
+    get_user_settings().then(settings => bindings = settings);
+
   });
 }
 
@@ -235,3 +298,11 @@ chrome.runtime.sendMessage({}, function (response) {
     }
   }, 10);
 });
+
+function get_user_settings() {
+  return new Promise((res, rej) => {
+    chrome.storage.sync.get(defaultOptions, function (items) {
+      res(items);
+    });
+  })
+}

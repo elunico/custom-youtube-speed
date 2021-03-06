@@ -25,7 +25,7 @@
 		display: flex;
 	}
 
-	.bottom-buttons > input {
+	.bottom-buttons>input {
 		width: 50%;
 		margin: 5px;
 	}
@@ -44,7 +44,8 @@
 		<input type="button" style="width: 13%" class="btn-preset" value="3.5x" />
 	</p>
 	<p>
-		<input type="button" style="width: 60%; text-align: center;" id="change-presets-button" value="Change preset buttons" />
+		<input type="button" style="width: 60%; text-align: center;" id="change-presets-button"
+			value="Change preset buttons" />
 		<div id="edit-preset-span" hidden>
 			<div>
 				Enter the value you wish to have easily accessible in each button in the text fields below.
@@ -68,9 +69,14 @@
 	</p>
 	<div>Current Speed: <span class="mno" id="cys-speedDiv"></span></div>
 	<p class="bottom-buttons">
-		<input type="button" id="btn-save-speed" style="width: 45%; text-align: center;" value="Set this speed as default" />
-		<input type="button" id="btn-disable-keys" style="width: 45%; text-align: center;"  value="Disable keyboard controls" />
+		<input type="button" id="btn-save-speed" style="width: 45%; text-align: center;"
+			value="Set this speed as default" />
+		<input type="button" id="btn-disable-keys" style="width: 45%; text-align: center;"
+			value="Disable keyboard controls" />
+
 	</p>
+	<p class="bottom-buttons"><input type="button" id="btn-keybindings" style="width: 45%; text-align: center;"
+			value="Edit Keybindings..."></p>
 	<p id="save-status"></p>
 
 </div>

@@ -3,11 +3,13 @@ let element = document.getElementById('cys-speedRange');
 let presetButtons = document.getElementsByClassName('btn-preset');
 let saveButton = document.getElementById('btn-save-speed');
 let disableKeysButton = document.getElementById('btn-disable-keys');
+let keysButton = document.getElementById('btn-keybindings');
 let changePresetButton = document.getElementById('change-presets-button');
 let presetFields = document.getElementsByClassName('preset-field');
 let submitPresetsButton = document.getElementById('submit-presets');
 let showingChangePreset = false;
 
+keysButton.onclick = () => chrome.runtime.openOptionsPage()
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.from == 'cys' && request.message == 'options-loaded') {
@@ -187,7 +189,7 @@ chrome.tabs.query({
     },
     function (response) {
       if (!response) {
-        return ;
+        return;
       }
       const {
         presets

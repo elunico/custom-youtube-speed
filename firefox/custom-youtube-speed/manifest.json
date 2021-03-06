@@ -1,6 +1,6 @@
 {
   "name": "Custom YouTube Speed",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "manifest_version": 2,
   "description": "Let's you change the current and default speed of YouTube videos by increments of 0.1 from 0.1 up to 8.0 using sliders, buttons, and optionally the keyboard",
   "homepage_url": "https://github.com/elunico/custom-youtube-speed",
@@ -21,6 +21,10 @@
   ],
   "omnibox": {
     "keyword": "cytspeed"
+  },
+  "options_ui": {
+    "page": "src/options/options.html",
+    "browser_style": true
   },
   "content_scripts": [
     {

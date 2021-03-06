@@ -1,24 +1,30 @@
-This update has all of your favorite features of the last update PLUS now you can change the values of the buttons in the extension to whatever value you want so you have easy access to your favorite speed settings. 
+5.2.0 UPDATE!
+
+NEW FEATURE: Change the keyboard shortcuts for the app! You can now change the keys that control the extension. Below (in the description) you can see the default keys used to control the extension. You can use the new options page to change which keys do what. There is also (though there has been for a while) the option to disable keyboard controls entirely if you prefer.
 
 ---
-This extension lets you change the speed of YouTube videos in a more granular way than the default options in the player. The player on YouTube let's you change the speed to 0.25x, 0.5x, 0.75x, 1x, 1.25x, 1.5x, 1.75x, and 2.0x the normal speed. This extension lets you change the speed of playback to between 0.1x to 8.0x normal speed by steps of 1.0, 0.5, 0.1, or 0.05. 
+5.1.0 UPDATE!
+This update has all of your favorite features of the last update PLUS now you can change the values of the buttons in the extension to whatever value you want so you have easy access to your favorite speed settings.
+
+---
+This extension lets you change the speed of YouTube videos in a more granular way than the default options in the player. The player on YouTube let's you change the speed to 0.25x, 0.5x, 0.75x, 1x, 1.25x, 1.5x, 1.75x, and 2.0x the normal speed. This extension lets you change the speed of playback to between 0.1x to 8.0x normal speed by steps of 1.0, 0.5, 0.1, or 0.05.
 
 Once you find a speed you like, you can also save it as the default speed which all YouTube videos will play at when opening.
 
-You can also program up to 7 "preset speeds" that allow you to simply click a button and set the speed of the YouTube video to your stored preset. 
+You can also program up to 7 "preset speeds" that allow you to simply click a button and set the speed of the YouTube video to your stored preset.
 
-By default this extension adds a the ability to control the speed of a YouTube video and some playback with keyboard shortcuts. 
+By default this extension adds a the ability to control the speed of a YouTube video and some playback with keyboard shortcuts.
 
-The '+' and '-' keys to change the speed by 0.1 and to the '*' and '/' keys change the speed in increments of 1.0. 
+The '+' and '-' keys to change the speed by 0.1 and to the '*' and '/' keys change the speed in increments of 1.0.
 
-If you hold shift while pressing these, '+' and '-' move in steps of 0.05 and '*' and '/' move in steps of 0.5. 
+If you hold shift while pressing these, '+' and '-' move in steps of 0.05 and '*' and '/' move in steps of 0.5.
 
-It also assigns '`' to reset the speed to 1.0x normal speed. 
+It also assigns '`' to reset the speed to 1.0x normal speed.
 
-Finally, it uses '[' and ']' to move through the video in time steps proportional to the speed of the video, rather than in increments of 5 or 10 seconds. 
+Finally, it uses '[' and ']' to move through the video in time steps proportional to the speed of the video, rather than in increments of 5 or 10 seconds.
 
-These shortcuts *can* be disabled on demand if you prefer not to have them and can be re-enabled at any time 
+These shortcuts *can* be disabled on demand if you prefer not to have them and can be re-enabled at any time
 
-I made this extension for fun and because it really made my YouTube experience better. I published it because I thought it might be useful for other people as well. I cannot promise every single YouTube page and video will work perfectly with this extension.  YouTube has a lot of places like gaming, educational playlists, livestreams, etc. 
+I made this extension for fun and because it really made my YouTube experience better. I published it because I thought it might be useful for other people as well. I cannot promise every single YouTube page and video will work perfectly with this extension.  YouTube has a lot of places like gaming, educational playlists, livestreams, etc.
 
-This extension is open source on GitHub (see website) link, and I am open to suggestions, issues, and fixes but I cannot make any promises about what I will do with those things if i receive them.  
+This extension is open source on GitHub (see website) link, and I am open to suggestions, issues, and fixes but I cannot make any promises about what I will do with those things if i receive them.

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>My Test Extension Options</title>
+
+  <style>
+    body {
+      font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+      margin: 1em;
+      margin-right: 50%;
+    }
+
+    .instructions {
+      font-size: 1.15rem;
+      margin-left: 1%;
+      margin-right: 50%;
+      min-width: 400px;
+    }
+
+    .main {
+      border-collapse: collapse;
+      min-width: 500px;
+      width: 50%;
+      font-size: 1.1rem;
+    }
+
+    thead {
+      font-weight: 700;
+      background-color: rgb(231, 231, 231);
+    }
+
+    td {
+      border: 1px solid gray;
+      width: 45%
+    }
+
+    td>input {
+      width: 30%;
+    }
+
+    td.short {
+      border: 1px solid gray;
+      width: 10%;
+      margin: 5px;
+      padding: 2px;
+    }
+
+    td.short>input {
+      width: 100%;
+    }
+
+    .letters {
+      font-family: monospace;
+      color: grey;
+      margin-left: 10%;
+    }
+
+    .note {
+      font-size: 1rem;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Key Bindings for <span style="color: red">Custom YouTube Speed</span></h1>
+  <span class="instructions">
+    <p>Here you can set custom keys for performing actions added by the Custom YouTube Speed
+      extension</p>
+    <p>You may click the "Set Key" button next to the action you want to customize and then strike the key you wish to
+      use for this action. Be sure to hit save at the bottom of the page for your changes to take effect</p>
+    <p class="note">
+      Note: Not all keys will work this way, such as escape, command, etc. Furthermore, any keys that conflict
+      with YouTube's builtin controls such as 'l', 'k', 'j', and the arrow keys are <strong>very</strong> buggy
+      and I would not suggest using these until a fix can be implemented.
+    </p>
+
+  </span>
+  <table class="main">
+    <thead>
+      <tr>
+        <!-- <td class="short">Enabled?</td> -->
+        <td>Action</td>
+        <td class="short">Set New Code</td>
+        <td>Keycode</td>
+      </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+  </table>
+
+  <br>
+
+  <button id="save">Save</button>
+  <div class="instructions" id="status"></div>
+
+  <h2 style="color: darkyellow;">☢️ Experimental ☢️</h2>
+  <p class="note">
+    If you would like to use a troublesome key, you may manually enter the <code>keyCode</code> JavaScript
+    Event value for it. If you don't know what this means, you can skip reading this section, just use the
+    button and the keys you want and watch out for the built-in YouTube shortcuts.
+  </p>
+  <p class="note">
+
+    You can use <a href="https://eluni.co/projects/keycodechecker/">this website</a> to discover the
+    <code>keyCode</code> of
+    striking any key on the keyboard. Be warned that <strong>there is no guarantee that keys manually entered using
+      <code>keyCode</code> will actually work</strong> but it is possible to try.
+  </p>
+
+
+  <script src="../common/default-options.js"></script>
+  <script src="../common/description-options.js"></script>
+  <script src="options.js"></script>
+</body>
+
+</html>
