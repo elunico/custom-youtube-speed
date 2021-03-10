@@ -1,30 +1,31 @@
 function toLetter(code) {
-  let v = String.fromCharCode(code).toLowerCase();
-  if ('abcdefghjiklmnopqrstuvwxyz1234567890!@#$%^&*()_+-=[]{};\':"<>,.?/\\|`~"'.includes(v)) {
-    return v;
-  } else {
-    let result = {
-      32: 'space',
-      16: 'shift',
-      13: 'enter',
-      27: 'escape',
-      17: 'control',
-      8: 'backspace',
-      91: 'command/win',
-      18: 'option/alt',
-      37: 'left',
-      38: 'up',
-      39: 'right',
-      40: 'down',
-      36: 'home',
-      35: 'end',
-      34: 'page up',
-      35: 'page down'
-    } [code]
+  // let v = String.fromCharCode(code).toLowerCase();
+  // if ('abcdefghjiklmnopqrstuvwxyz1234567890!@#$%^&*()_+-=[]{};\':"<>,.?/\\|`~"'.includes(v)) {
+  //   return v;
+  // } else {
+  //   let result = {
+  //     32: 'space',
+  //     16: 'shift',
+  //     13: 'enter',
+  //     27: 'escape',
+  //     17: 'control',
+  //     8: 'backspace',
+  //     91: 'command/win',
+  //     18: 'option/alt',
+  //     37: 'left',
+  //     38: 'up',
+  //     39: 'right',
+  //     40: 'down',
+  //     36: 'home',
+  //     35: 'end',
+  //     34: 'page up',
+  //     35: 'page down'
+  //   } [code]
 
-    if (result) return `<${result}>`;
-    else return '<???>';
-  }
+  //   if (result) return `<${result}>`;
+  //   else return '<???>';
+  return code;
+
 }
 
 function killEvent(event) {
@@ -65,11 +66,9 @@ function generateTableContent() {
     row.onkeypress = function (event) {
       console.log(event);
       if (row['data-listening']) {
-        console.log(event.keyCode);
+        console.log(event.key);
         let codein = document.getElementById(`code-${row['data-action-name']}`)
-        codein.value = Number(event.keyCode);
-        let letter = document.getElementById(`letter-${row['data-action-name']}`);
-        letter.textContent = toLetter(Number(event.keyCode));
+        codein.value = (event.key);
         button.value = 'Set Key';
         row['data-listening'] = false;
         row.blur();
@@ -84,17 +83,10 @@ function generateTableContent() {
     let code = document.createElement('td');
     let codein = document.createElement('input');
     codein.id = `code-${action}`;
-    codein.type = 'number'
+    codein.type = 'text'
     codein.value = value;
     code.appendChild(codein);
-    let letter = document.createElement('span');
-    letter.className = 'letters'
-    letter.textContent = `${toLetter(value)}`;
-    letter.id = `letter-${action}`;
-    codein.oninput = function () {
-      letter.textContent = `${toLetter(Number(codein.value))}`;
-    }
-    code.appendChild(letter);
+
 
 
     // enabled.appendChild(checkbox);
@@ -114,9 +106,11 @@ function save_options() {
   let options = {};
   for (let key of Object.keys(defaults)) {
     let codein = document.getElementById(`code-${key}`)
-    options[key] = Number(codein.value);
+    options[key] = (codein.value);
   }
   console.log(options);
+  options.stopprop = document.getElementById('stopprop').checked;
+  options.prevdef = document.getElementById('prevdef').checked;
   chrome.storage.sync.set(options, function () {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -128,16 +122,21 @@ function save_options() {
 }
 
 // Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
 function restore_options() {
   // Use default value color = 'red' and likesColor = true.
-  chrome.storage.sync.get(defaults, function (items) {
+  chrome.storage.sync.get({
+    ...defaults,
+    prevdef: false,
+    stopprop: false
+  }, function (items) {
+    prevdef = items.prevdef;
+    stopprop = items.stopprop;
     console.log(items);
     for (let key of Object.keys(items)) {
-      let codein = document.getElementById(`code-${key}`)
-      codein.value = Number(items[key]);
-      let letter = document.getElementById(`letter-${key}`);
-      letter.textContent = toLetter(Number(items[key]));
+      console.log(key);
+      let codein = document.getElementById(`key-${key}`)
+      codein.value = (items[key]);
+
     }
   });
 }

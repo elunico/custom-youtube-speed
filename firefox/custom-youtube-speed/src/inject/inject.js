@@ -2,19 +2,22 @@ function toArray(htmlCollection) {
   return new Array(htmlCollection.length).fill(0).map((ignore, index) => htmlCollection[index]);
 }
 
+let prevdef;
+let stopprop;
+
 const defaultPresets = ['1', '2', '2.25', '2.5', '2.75', '3', '3.5'];
 
 const defaultOptions = {
-  'skip-forward': 93,
-  'skip-backward': 91,
-  'speed-up': 43,
-  'slow-down': 45,
-  'big-speed-up': 42,
-  'big-slow-down': 47,
-  'speed-modifier': 16,
-  'reset-speed': 96,
-  'pause': 13
+  'skip-forward': ']',
+  'skip-backward': '[',
+  'speed-up': '+',
+  'slow-down': '-',
+  'big-speed-up': '*',
+  'big-slow-down': "/",
+  'reset-speed': '`',
+  'pause': 'Enter',
 }
+
 
 const optionsDescriptions = {
   'skip-forward': 'Skip forward in video',
@@ -58,6 +61,14 @@ browser.storage.sync.get({
 });
 
 function loadDefault() {
+  chrome.storage.sync.get({
+    'prevdef': false,
+    'stopprop': false,
+    ...defaultOptions
+  }, function (items) {
+    prevdef = items.prevdef;
+    stopprop = items.stopprop;
+  });
   browser.storage.sync.get({
     'cys-default-speed': 1
   }).then((items) => {
@@ -129,39 +140,35 @@ function isalpha(code) {
 }
 
 function keybind_matches(event, code) {
-  if (event.keyCode == code) {
+  if (event.key == code) {
     return true
   }
-  if (islower(code)) {
-    return event.keyCode == code || event.keyCode == (code - 32);
-  } else if (isupper(code)) {
-    return event.keyCode == code || event.keyCode == (code + 32);
-  }
-  return false;
+
+  return event.key.toLowerCase() == code.toLowerCase();
 }
+
 
 let bindings;
 get_user_settings().then(settings => bindings = settings);
 
 function setHandler() {
-  document.addEventListener('keypress', function (event) {
+  document.addEventListener('keydown', function (event) {
     toArray(document.getElementsByTagName('video')).map((video) => {
 
       // todo: prevent default in async is maybe not going to work
 
       if (!bindings) bindings = defaultOptions;
-      console.log(event.keyCode);
       if (video && listening) {
-        if (keybind_matches(event, Number(bindings['skip-forward']))) {
+        if (keybind_matches(event, (bindings['skip-forward']))) {
           video.currentTime += (10 * video.playbackRate);
           killEvent(event);
-        } else if (keybind_matches(event, Number(bindings['skip-backward']))) {
+        } else if (keybind_matches(event, (bindings['skip-backward']))) {
           video.currentTime -= (10 * video.playbackRate);
           killEvent(event);
-        } else if (keybind_matches(event, Number(bindings['pause']))) {
+        } else if (keybind_matches(event, (bindings['pause']))) {
           togglePause(video);
           killEvent(event);
-        } else if (keybind_matches(event, Number(bindings['reset-speed']))) {
+        } else if (keybind_matches(event, (bindings['reset-speed']))) {
           speedSetting = 1;
           video.playbackRate = 1;
           showStatus(video.playbackRate);
@@ -301,7 +308,11 @@ chrome.runtime.sendMessage({}, function (response) {
 
 function get_user_settings() {
   return new Promise((res, rej) => {
-    chrome.storage.sync.get(defaultOptions, function (items) {
+    chrome.storage.sync.get({
+      ...defaultOptions,
+      prevdef: false,
+      stopprop: false
+    }, function (items) {
       res(items);
     });
   })

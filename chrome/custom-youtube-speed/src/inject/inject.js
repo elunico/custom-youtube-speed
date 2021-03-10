@@ -2,18 +2,20 @@ function toArray(htmlCollection) {
   return new Array(htmlCollection.length).fill(0).map((ignore, index) => htmlCollection[index]);
 }
 
+let prevdef;
+let stopprop;
+
 const defaultPresets = ['1', '2', '2.25', '2.5', '2.75', '3', '3.5'];
 
 const defaultOptions = {
-  'skip-forward': 93,
-  'skip-backward': 91,
-  'speed-up': 43,
-  'slow-down': 45,
-  'big-speed-up': 42,
-  'big-slow-down': 47,
-  'speed-modifier': 16,
-  'reset-speed': 96,
-  'pause': 13
+  'skip-forward': ']',
+  'skip-backward': '[',
+  'speed-up': '+',
+  'slow-down': '-',
+  'big-speed-up': '*',
+  'big-slow-down': "/",
+  'reset-speed': '`',
+  'pause': 'Enter',
 }
 
 const optionsDescriptions = {
@@ -55,11 +57,19 @@ chrome.storage.sync.get({
 });
 
 function killEvent(event) {
-  event.stopImmediatePropagation();
-  event.preventDefault()
+  if (stopprop) event.stopImmediatePropagation();
+  if (prevdef) event.preventDefault();
 }
 
 function loadDefault() {
+  chrome.storage.sync.get({
+    'prevdef': false,
+    'stopprop': false,
+    ...defaultOptions
+  }, function (items) {
+    prevdef = items.prevdef;
+    stopprop = items.stopprop;
+  });
   chrome.storage.sync.get({
     'cys-default-speed': 1
   }, function (items) {
@@ -121,23 +131,12 @@ function showStatus(status) {
   }, 750);
 }
 
-const isupper = code => code >= 65 && code <= 90;
-const islower = code => code >= 97 && code <= 122;
-
-function isalpha(code) {
-  return islower(code) || isupper(code);
-}
-
 function keybind_matches(event, code) {
-  if (event.keyCode == code) {
+  if (event.key == code) {
     return true
   }
-  if (islower(code)) {
-    return event.keyCode == code || event.keyCode == (code - 32);
-  } else if (isupper(code)) {
-    return event.keyCode == code || event.keyCode == (code + 32);
-  }
-  return false;
+
+  return event.key.toLowerCase() == code.toLowerCase();
 }
 
 let bindings;
@@ -149,21 +148,19 @@ function setHandler() {
 
     if (!bindings) bindings = defaultOptions;
 
-    console.log(event.keyCode);
-
     toArray(document.getElementsByTagName('video')).map((video) => {
       if (video && listening) {
 
-        if (keybind_matches(event, Number(bindings['skip-forward']))) {
+        if (keybind_matches(event, (bindings['skip-forward']))) {
           video.currentTime += (10 * video.playbackRate);
           killEvent(event);
-        } else if (keybind_matches(event, Number(bindings['skip-backward']))) {
+        } else if (keybind_matches(event, (bindings['skip-backward']))) {
           video.currentTime -= (10 * video.playbackRate);
           killEvent(event);
-        } else if (keybind_matches(event, Number(bindings['pause']))) {
+        } else if (keybind_matches(event, (bindings['pause']))) {
           togglePause(video);
           killEvent(event);
-        } else if (keybind_matches(event, Number(bindings['reset-speed']))) {
+        } else if (keybind_matches(event, (bindings['reset-speed']))) {
           speedSetting = 1;
           video.playbackRate = 1;
           showStatus(video.playbackRate);
@@ -302,7 +299,11 @@ chrome.extension.sendMessage({}, function (response) {
 
 function get_user_settings() {
   return new Promise((res, rej) => {
-    chrome.storage.sync.get(defaultOptions, function (items) {
+    chrome.storage.sync.get({
+      ...defaultOptions,
+      stopprop: false,
+      prevdef: false
+    }, function (items) {
       res(items);
     });
   })

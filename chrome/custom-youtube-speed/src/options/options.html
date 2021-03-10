@@ -35,9 +35,7 @@
       width: 45%
     }
 
-    td>input {
-      width: 30%;
-    }
+
 
     td.short {
       border: 1px solid gray;
@@ -78,13 +76,14 @@
     </p>
 
   </span>
+  <h2>Preferences</h2>
   <table class="main">
     <thead>
       <tr>
         <!-- <td class="short">Enabled?</td> -->
         <td>Action</td>
         <td class="short">Set New Code</td>
-        <td>Keycode</td>
+        <td><code>key</code></td>
       </tr>
     </thead>
     <tbody>
@@ -94,21 +93,47 @@
 
   <br>
 
+  <span class="main">
+    <p class="instructions">
+      Below you have some options for how to treat your custom shortcut keys.
+      If you do not wish to altar the behavior of Custom YouTube Speed 5.1.0, do not change these settings
+      <ul>
+        <li>Prevent default - stops letters from appearing in text areas. Prevents <strong>default</strong> normal
+          behavior of your keys</li>
+        <li>Stop Propogation - prevent additional events from firing</li>
+      </ul>
+    </p>
+    <p>
+      <label for="prevdef">
+        <input type="checkbox" name="Prevent Default" id="prevdef">
+        Prevent Default
+      </label>
+    </p>
+    <p>
+      <label for="stopprop">
+        <input type="checkbox" name="Stop Propagation" id="stopprop">
+        Stop Propagation
+      </label>
+    </p>
+  </span>
+
   <button id="save">Save</button>
   <div class="instructions" id="status"></div>
 
   <h2 style="color: darkyellow;">☢️ Experimental ☢️</h2>
   <p class="note">
-    If you would like to use a troublesome key, you may manually enter the <code>keyCode</code> JavaScript
+    If you would like to use a troublesome key, you may manually enter the <code>key</code> property for the JavaScript
     Event value for it. If you don't know what this means, you can skip reading this section, just use the
     button and the keys you want and watch out for the built-in YouTube shortcuts.
   </p>
   <p class="note">
 
     You can use <a href="https://eluni.co/projects/keycodechecker/">this website</a> to discover the
-    <code>keyCode</code> of
+    <code>key</code> attribute of
     striking any key on the keyboard. Be warned that <strong>there is no guarantee that keys manually entered using
-      <code>keyCode</code> will actually work</strong> but it is possible to try.
+      <code>key</code> will actually work</strong> but it is possible to try. Simply copy paste the output to the
+    box
+
   </p>
 
 

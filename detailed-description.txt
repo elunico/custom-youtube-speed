@@ -1,3 +1,11 @@
+6.0.0 UPDATE!
+
+This is a breaking change. In an effort to make the extension work as closely as possible to how it was in 5.1.0 provided no options are changed, the following things were done
+1. 'keypress' was changed to 'keydown' this due to how macOS reports codes in keypress. This should be transparent to the users
+2. The options page no longer uses `keyCode` it now uses `key`. `keyCode` is deprecated and inconsistent between platforms and more opaque to use.
+3. `event.preventDefault()` is now an option and no longer forced on. Not calling preventDefault() is the old behavior of 5.1.0 so this decision is so that the extension more closely works like 5.1.0 if no key bindings are changed
+
+
 5.2.0 UPDATE!
 
 NEW FEATURE: Change the keyboard shortcuts for the app! You can now change the keys that control the extension. Below (in the description) you can see the default keys used to control the extension. You can use the new options page to change which keys do what. There is also (though there has been for a while) the option to disable keyboard controls entirely if you prefer.
@@ -5,6 +13,11 @@ NEW FEATURE: Change the keyboard shortcuts for the app! You can now change the k
 ---
 5.1.0 UPDATE!
 This update has all of your favorite features of the last update PLUS now you can change the values of the buttons in the extension to whatever value you want so you have easy access to your favorite speed settings.
+
+---
+5.0.0 RECENTLY UPDATED!!! BUGS FIXED!! I noticed that when ads play it resets the speed the video. I have added a mechanism that ensures the speed is always moving at the current setting when the video is playing even after an ad interrupts it!!
+
+5.0.2 Fixed issue with the grave key and added number formatting so there are no long decimal points
 
 ---
 This extension lets you change the speed of YouTube videos in a more granular way than the default options in the player. The player on YouTube let's you change the speed to 0.25x, 0.5x, 0.75x, 1x, 1.25x, 1.5x, 1.75x, and 2.0x the normal speed. This extension lets you change the speed of playback to between 0.1x to 8.0x normal speed by steps of 1.0, 0.5, 0.1, or 0.05.
