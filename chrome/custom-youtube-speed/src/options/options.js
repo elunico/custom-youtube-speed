@@ -134,7 +134,7 @@ function restore_options() {
     console.log(items);
     for (let key of Object.keys(items)) {
       console.log(key);
-      let codein = document.getElementById(`key-${key}`)
+      let codein = document.getElementById(`code-${key}`)
       codein.value = (items[key]);
 
     }
