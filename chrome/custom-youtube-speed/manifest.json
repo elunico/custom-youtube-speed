@@ -18,7 +18,8 @@
   "options_page": "src/options/options.html",
   "permissions": [
     "storage",
-    "https://youtube.com/*"
+    "https://youtube.com/*",
+    "https://youtu.be/*"
   ],
   "omnibox": {
     "keyword": "cytspeed"
@@ -26,14 +27,16 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.youtube.com/*"
+        "https://www.youtube.com/*",
+        "https://youtu.be/*"
       ],
       "js": [
         "src/inject/inject.js"
       ],
       "css": [
         "src/inject/inject.css"
-      ]
+      ],
+      "all_frames": true
     }
   ]
 }
