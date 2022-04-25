@@ -1,4 +1,4 @@
-function toArray(htmlCollection) {
+ function toArray(htmlCollection) {
   return new Array(htmlCollection.length).fill(0).map((ignore, index) => htmlCollection[index]);
 }
 

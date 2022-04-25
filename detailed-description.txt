@@ -1,3 +1,6 @@
+6.1.2 Update!
+Changed icon and name to comply with guidelines.
+
 6.0.0 UPDATE!
 
 This is a breaking change. In an effort to make the extension work as closely as possible to how it was in 5.1.0 provided no options are changed, the following things were done
