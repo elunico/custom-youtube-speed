@@ -1,5 +1,8 @@
-6.1.2 Update!
-Changed icon and name to comply with guidelines.
+6.1.2 UPDATE!
+Replaced Icon and text due to guidelines
+
+6.1.0 UPDATE!
+Contributions from @jclaveau on GitHub to enable features in embedded YouTubes and iframes from YouTube.
 
 6.0.0 UPDATE!
 
@@ -7,6 +10,8 @@ This is a breaking change. In an effort to make the extension work as closely as
 1. 'keypress' was changed to 'keydown' this due to how macOS reports codes in keypress. This should be transparent to the users
 2. The options page no longer uses `keyCode` it now uses `key`. `keyCode` is deprecated and inconsistent between platforms and more opaque to use.
 3. `event.preventDefault()` is now an option and no longer forced on. Not calling preventDefault() is the old behavior of 5.1.0 so this decision is so that the extension more closely works like 5.1.0 if no key bindings are changed
+
+This will make the extension act more like it did before 5.2.0. It does however break the keyboard shortcuts that people might have set until now
 
 
 5.2.0 UPDATE!
@@ -23,13 +28,13 @@ This update has all of your favorite features of the last update PLUS now you ca
 5.0.2 Fixed issue with the grave key and added number formatting so there are no long decimal points
 
 ---
-This extension lets you change the speed of YouTube™ videos in a more granular way than the default options in the player. The player on YouTube™ let's you change the speed to 0.25x, 0.5x, 0.75x, 1x, 1.25x, 1.5x, 1.75x, and 2.0x the normal speed. This extension lets you change the speed of playback to between 0.1x to 8.0x normal speed by steps of 1.0, 0.5, 0.1, or 0.05.
+This extension lets you change the speed of YouTube videos in a more granular way than the default options in the player. The player on YouTube let's you change the speed to 0.25x, 0.5x, 0.75x, 1x, 1.25x, 1.5x, 1.75x, and 2.0x the normal speed. This extension lets you change the speed of playback to between 0.1x to 8.0x normal speed by steps of 1.0, 0.5, 0.1, or 0.05.
 
-Once you find a speed you like, you can also save it as the default speed which all YouTube™ videos will play at when opening.
+Once you find a speed you like, you can also save it as the default speed which all YouTube videos will play at when opening.
 
-You can also program up to 7 "preset speeds" that allow you to simply click a button and set the speed of the YouTube™ video to your stored preset.
+You can also program up to 7 "preset speeds" that allow you to simply click a button and set the speed of the YouTube video to your stored preset.
 
-By default this extension adds a the ability to control the speed of a YouTube™ video and some playback with keyboard shortcuts.
+By default this extension adds a the ability to control the speed of a YouTube video and some playback with keyboard shortcuts.
 
 The '+' and '-' keys to change the speed by 0.1 and to the '*' and '/' keys change the speed in increments of 1.0.
 
@@ -41,7 +46,7 @@ Finally, it uses '[' and ']' to move through the video in time steps proportiona
 
 These shortcuts *can* be disabled on demand if you prefer not to have them and can be re-enabled at any time
 
-I made this extension for fun and because it really made my YouTube™ experience better. I published it because I thought it might be useful for other people as well. I cannot promise every single YouTube™ page and video will work perfectly with this extension.  YouTube™ has a lot of places like gaming, educational playlists, livestreams, etc.
+I made this extension for fun and because it really made my YouTube experience better. I published it because I thought it might be useful for other people as well. I cannot promise every single YouTube page and video will work perfectly with this extension.  YouTube has a lot of places like gaming, educational playlists, livestreams, etc.
 
 This extension is open source on GitHub (see website) link, and I am open to suggestions, issues, and fixes but I cannot make any promises about what I will do with those things if i receive them.
 

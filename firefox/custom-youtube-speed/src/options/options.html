@@ -2,27 +2,43 @@
 <html>
 
 <head>
-  <title>Custom Video Speed for YouTube™ Options</title>
+  <title>Custom Video Speed for YouTube&trade; Options</title>
 
   <style>
     body {
       font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
       margin: 1em;
+      width: min-content;
       margin-right: 50%;
     }
 
     .instructions {
-      font-size: 1.15rem;
-      margin-left: 1%;
-      margin-right: 50%;
+      font-size: 1.05rem;
       min-width: 400px;
+    }
+
+    .controls {
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .most-rel {
+      font-size: 1.05em;
+      padding: 0.2em;
+      margin: 0.2em;
+      border: 2px solid gray;
     }
 
     .main {
       border-collapse: collapse;
-      min-width: 500px;
-      width: 50%;
+      width: 600px;
+      /* width: 400px; */
       font-size: 1.1rem;
+      border: 2px solid gray;
+      margin: 0.2em;
+
+
+
     }
 
     thead {
@@ -63,9 +79,9 @@
 
 <body>
 
-  <h1>Key Bindings for <span style="color: red">Custom Video Speed for YouTube™</span></h1>
+  <h1>Options for <span style="color: red">Custom Video Speed for YouTube&trade;</span></h1>
   <span class="instructions">
-    <p>Here you can set custom keys for performing actions added by the Custom Video Speed for YouTube™
+    <p>Here you can set custom keys for performing actions added by the Custom Video Speed for YouTube&trade;
       extension</p>
     <p>You may click the "Set Key" button next to the action you want to customize and then strike the key you wish to
       use for this action. Be sure to hit save at the bottom of the page for your changes to take effect</p>
@@ -77,60 +93,83 @@
 
   </span>
   <h2>Preferences</h2>
+  <div id="root">
 
-  <table class="main">
-    <thead>
-      <tr>
-        <!-- <td class="short">Enabled?</td> -->
-        <td>Action</td>
-        <td class="short">Set New Code</td>
-        <td><code>key</code></td>
-      </tr>
-    </thead>
-    <tbody>
+    <div class="most-rel">
+      <p class="instructions">
+        Check the box below to <strong>enable</strong> video speed adjustments using the keyboard <i>event when typing
+          in
+          text fields</i>
+      </p>
+      <p>
+        <label class="controls" for="allowintext">
+          <input type="checkbox" name="allow-in-text" id="allowintext">
+          Allow Speed Changes in Text Boxes
+        </label>
+      </p>
+    </div>
+    <br>
 
-    </tbody>
-  </table>
+    <table class="main">
+      <thead>
+        <tr>
+          <!-- <td class="short">Enabled?</td> -->
+          <td>Action</td>
+          <td class="short">Set New Code</td>
+          <td><code>key</code></td>
+        </tr>
+      </thead>
+      <tbody>
 
+      </tbody>
+    </table>
+
+    <br>
+
+    <div class="main">
+      <p class="instructions">
+        Below you have some options for how to treat your custom shortcut keys.
+        If you do not wish to altar the behavior of Custom YouTube Speed 5.1.0, do not change these settings
+      <ul>
+        <li>Prevent default - stops letters from appearing in text areas. Prevents <strong>default</strong> normal
+          behavior of your keys</li>
+        <li>Stop Propogation - prevent additional events from firing</li>
+      </ul>
+      </p>
+      <p>
+        <label for="prevdef">
+          <input type="checkbox" name="Prevent Default" id="prevdef">
+          Prevent Default
+        </label>
+      </p>
+      <p>
+        <label for="stopprop">
+          <input type="checkbox" name="Stop Propagation" id="stopprop">
+          Stop Propagation
+        </label>
+      </p>
+    </div>
+  </div>
   <br>
-  <span class="main">
-    <p class="instructions">
-      Below you have some options for how to treat your custom shortcut keys.
-      If you do not wish to altar the behavior of Custom YouTube Speed 5.1.0, do not change these settings
-    <ul>
-      <li>Prevent default - stops letters from appearing in text areas. Prevents <strong>default</strong> normal
-        behavior of your keys</li>
-      <li>Stop Propogation - prevent additional events from firing</li>
-    </ul>
-    </p>
-    <p>
-      <label for="prevdef">
-        <input type="checkbox" name="Prevent Default" id="prevdef">
-        Prevent Default
-      </label>
-    </p>
-    <p>
-      <label for="stopprop">
-        <input type="checkbox" name="Stop Propagation" id="stopprop">
-        Stop Propagation
-      </label>
-    </p>
-  </span>
   <button id="save">Save</button>
   <div class="instructions" id="status"></div>
+  <br>
+  <br>
 
   <h2 style="color: darkyellow;">☢️ Experimental ☢️</h2>
   <p class="note">
-    If you would like to use a troublesome key, you may manually enter the <code>key</code> JavaScript
+    If you would like to use a troublesome key, you may manually enter the <code>key</code> property for the JavaScript
     Event value for it. If you don't know what this means, you can skip reading this section, just use the
     button and the keys you want and watch out for the built-in YouTube shortcuts.
   </p>
   <p class="note">
 
     You can use <a href="https://eluni.co/projects/keycodechecker/">this website</a> to discover the
-    <code>key</code> of
+    <code>key</code> attribute of
     striking any key on the keyboard. Be warned that <strong>there is no guarantee that keys manually entered using
-      <code>key</code> will actually work</strong> but it is possible to try.
+      <code>key</code> will actually work</strong> but it is possible to try. Simply copy paste the output to the
+    box
+
   </p>
 
 

@@ -30,7 +30,7 @@ function toLetter(code) {
 
 function killEvent(event) {
   event.stopImmediatePropagation();
-  event.preventDefault()
+  event.preventDefault();
 }
 
 function generateTableContent() {
@@ -42,7 +42,7 @@ function generateTableContent() {
     let row = document.createElement('tr');
     row['data-action-name'] = action;
     row['data-listening'] = false;
-    row.tabIndex = '-1'
+    row.tabIndex = '-1';
     // let enabled = document.createElement('td');
     // enabled.className = 'enable'
     // let checkbox = document.createElement('input');
@@ -62,19 +62,19 @@ function generateTableContent() {
       row['data-listening'] = true;
       button.blur();
       row.focus();
-    }
+    };
     row.onkeydown = function (event) {
       console.log(event);
       if (row['data-listening']) {
         console.log(event.key);
-        let codein = document.getElementById(`code-${row['data-action-name']}`)
+        let codein = document.getElementById(`code-${row['data-action-name']}`);
         codein.value = (event.key);
         button.value = 'Set Key';
         row['data-listening'] = false;
         row.blur();
         killEvent(event);
       }
-    }
+    };
     set.appendChild(button);
 
     let explanation = document.createElement('td');
@@ -83,7 +83,7 @@ function generateTableContent() {
     let code = document.createElement('td');
     let codein = document.createElement('input');
     codein.id = `code-${action}`;
-    codein.type = 'text'
+    codein.type = 'text';
     codein.value = value;
     code.appendChild(codein);
 
@@ -105,12 +105,13 @@ generateTableContent();
 function save_options() {
   let options = {};
   for (let key of Object.keys(defaults)) {
-    let codein = document.getElementById(`code-${key}`)
+    let codein = document.getElementById(`code-${key}`);
     options[key] = (codein.value);
   }
-  console.log(options);
+  options.allowintext = document.getElementById('allowintext').checked;
   options.stopprop = document.getElementById('stopprop').checked;
   options.prevdef = document.getElementById('prevdef').checked;
+  console.log(options);
   chrome.storage.sync.set(options, function () {
     // Update status to let user know options were saved.
     var status = document.getElementById('status');
@@ -122,27 +123,27 @@ function save_options() {
 }
 
 // Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
 function restore_options() {
   // Use default value color = 'red' and likesColor = true.
   chrome.storage.sync.get({
     ...defaults,
     prevdef: false,
-    stopprop: false
+    stopprop: false,
+    allowintext: false
   }, function (items) {
+    document.getElementById('prevdef').checked = items.prevdef;
+    document.getElementById('stopprop').checked = items.stopprop;
+    document.getElementById('allowintext').checked = items.allowintext;
+    // global in inject.js needed for there
     prevdef = items.prevdef;
     stopprop = items.stopprop;
+    allowintext = items.allowintext;
     console.log(items);
     for (let key of Object.keys(items)) {
-      console.log(key);
-      let codein = document.getElementById(`code-${key}`)
-      codein.value = (items[key]);
+      console.log(`code-${key}`);
+      let codein = document.getElementById(`code-${key}`);
+      if (codein) codein.value = (items[key]);
 
     }
   });
 }
-
-
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click',
-  save_options);

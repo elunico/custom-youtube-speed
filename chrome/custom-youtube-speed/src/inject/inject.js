@@ -1,9 +1,10 @@
- function toArray(htmlCollection) {
+function toArray(htmlCollection) {
   return new Array(htmlCollection.length).fill(0).map((ignore, index) => htmlCollection[index]);
 }
 
 let prevdef;
 let stopprop;
+let allowintext;
 
 const defaultPresets = ['1', '2', '2.25', '2.5', '2.75', '3', '3.5'];
 
@@ -16,7 +17,7 @@ const defaultOptions = {
   'big-slow-down': "/",
   'reset-speed': '`',
   'pause': 'Enter',
-}
+};
 
 const optionsDescriptions = {
   'skip-forward': 'Skip forward in video',
@@ -28,7 +29,7 @@ const optionsDescriptions = {
   'speed-modifier': 'Multiplies all speed increments by <code>1/2</code>',
   'reset-speed': 'Set speed to <code>1.0x</code>',
   'pause': 'Start and stop the video'
-}
+};
 
 
 
@@ -53,7 +54,7 @@ chrome.storage.sync.get({
     from: 'cys'
   }, function (response) {
     console.log(response);
-  })
+  });
 });
 
 function killEvent(event) {
@@ -65,6 +66,7 @@ function loadDefault() {
   chrome.storage.sync.get({
     'prevdef': false,
     'stopprop': false,
+    'allowintext': false,
     ...defaultOptions
   }, function (items) {
     prevdef = items.prevdef;
@@ -80,10 +82,10 @@ function loadDefault() {
         video.playbackRate = speed;
         console.log(`Set speed to loaded default: ${speed}`);
         chrome.runtime.sendMessage({
-            message: 'options-loaded',
-            from: 'cys',
-            speed: speed
-          },
+          message: 'options-loaded',
+          from: 'cys',
+          speed: speed
+        },
           function (response) {
             if (response && response.ok) {
               console.log('UI Updated for loaded options');
@@ -133,14 +135,20 @@ function showStatus(status) {
 
 function keybind_matches(event, code) {
   if (event.key == code) {
-    return true
+    return true;
   }
 
   return event.key.toLowerCase() == code.toLowerCase();
 }
 
 let bindings;
-get_user_settings().then(settings => bindings = settings);
+get_user_settings().then(settings => {
+  bindings = settings;
+  prevdef = settings.prevdef;
+  stopprop = settings.stopprop;
+  allowintext = settings.allowintext;
+
+});
 
 function setHandler() {
   document.addEventListener('keypress', function (event) {
@@ -150,6 +158,11 @@ function setHandler() {
 
     toArray(document.getElementsByTagName('video')).map((video) => {
       if (video && listening) {
+        let elt = document.activeElement;
+        let name = elt.tagName.toLowerCase();
+        if (!allowintext && (name == 'input' || name == 'textarea' || elt.hasAttribute('contenteditable'))) {
+          return;
+        }
 
         if (keybind_matches(event, (bindings['skip-forward']))) {
           video.currentTime += (10 * video.playbackRate);
@@ -219,7 +232,7 @@ chrome.extension.sendMessage({}, function (response) {
               status: 'ok',
               listening: listening,
               message: 'Toggled listening'
-            })
+            });
           });
           return true;
         }
@@ -302,9 +315,10 @@ function get_user_settings() {
     chrome.storage.sync.get({
       ...defaultOptions,
       stopprop: false,
-      prevdef: false
+      prevdef: false,
+      allowintext: false
     }, function (items) {
       res(items);
     });
-  })
+  });
 }

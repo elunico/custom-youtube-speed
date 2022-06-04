@@ -4,6 +4,7 @@ function toArray(htmlCollection) {
 
 let prevdef;
 let stopprop;
+let allowintext;
 
 const defaultPresets = ['1', '2', '2.25', '2.5', '2.75', '3', '3.5'];
 
@@ -16,7 +17,7 @@ const defaultOptions = {
   'big-slow-down': "/",
   'reset-speed': '`',
   'pause': 'Enter',
-}
+};
 
 
 const optionsDescriptions = {
@@ -29,11 +30,11 @@ const optionsDescriptions = {
   'speed-modifier': 'Multiplies all speed increments by <code>1/2</code>',
   'reset-speed': 'Set speed to <code>1.0x</code>',
   'pause': 'Start and stop the video'
-}
+};
 
 function killEvent(event) {
   event.stopImmediatePropagation();
-  event.preventDefault()
+  event.preventDefault();
 }
 
 let speedSetting = 1.0;
@@ -57,13 +58,14 @@ browser.storage.sync.get({
     from: 'cys'
   }, function (response) {
     console.log(response);
-  })
+  });
 });
 
 function loadDefault() {
   chrome.storage.sync.get({
     'prevdef': false,
     'stopprop': false,
+    'allowintext': false,
     ...defaultOptions
   }, function (items) {
     prevdef = items.prevdef;
@@ -81,10 +83,10 @@ function loadDefault() {
         video.playbackRate = speed;
         console.log(`Set speed to loaded default: ${speed}`);
         chrome.runtime.sendMessage({
-            message: 'options-loaded',
-            from: 'cys',
-            speed: speed
-          },
+          message: 'options-loaded',
+          from: 'cys',
+          speed: speed
+        },
           function (response) {
             if (response && response.ok) {
               console.log('UI Updated for loaded options');
@@ -141,7 +143,7 @@ function isalpha(code) {
 
 function keybind_matches(event, code) {
   if (event.key == code) {
-    return true
+    return true;
   }
 
   return event.key.toLowerCase() == code.toLowerCase();
@@ -149,7 +151,13 @@ function keybind_matches(event, code) {
 
 
 let bindings;
-get_user_settings().then(settings => bindings = settings);
+get_user_settings().then(settings => {
+  bindings = settings;
+  prevdef = settings.prevdef;
+  stopprop = settings.stopprop;
+  allowintext = settings.allowintext;
+
+});
 
 function setHandler() {
   document.addEventListener('keydown', function (event) {
@@ -159,6 +167,12 @@ function setHandler() {
 
       if (!bindings) bindings = defaultOptions;
       if (video && listening) {
+        let elt = document.activeElement;
+        let name = elt.tagName.toLowerCase();
+        if (!allowintext && (name == 'input' || name == 'textarea' || elt.hasAttribute('contenteditable'))) {
+          return;
+        }
+
         if (keybind_matches(event, (bindings['skip-forward']))) {
           video.currentTime += (10 * video.playbackRate);
           killEvent(event);
@@ -228,7 +242,7 @@ chrome.runtime.sendMessage({}, function (response) {
               status: 'ok',
               listening: listening,
               message: 'Toggled listening'
-            })
+            });
           });
           return true;
         }
@@ -311,9 +325,10 @@ function get_user_settings() {
     chrome.storage.sync.get({
       ...defaultOptions,
       prevdef: false,
-      stopprop: false
+      stopprop: false,
+      allowintext: false
     }, function (items) {
       res(items);
     });
-  })
+  });
 }

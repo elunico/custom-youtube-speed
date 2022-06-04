@@ -7,4 +7,4 @@ const defaults = {
   'big-slow-down': "/",
   'reset-speed': '`',
   'pause': 'Enter',
-}
+};
