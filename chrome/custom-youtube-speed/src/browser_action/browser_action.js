@@ -1,5 +1,5 @@
-let element = document.getElementById('cys-speedRange');
-
+// Elements in the browser action page
+let speedBarElement = document.getElementById('cys-speedRange');
 let presetButtons = document.getElementsByClassName('btn-preset');
 let saveButton = document.getElementById('btn-save-speed');
 let disableKeysButton = document.getElementById('btn-disable-keys');
@@ -9,40 +9,26 @@ let presetFields = document.getElementsByClassName('preset-field');
 let submitPresetsButton = document.getElementById('submit-presets');
 let showingChangePreset = false;
 
-keysButton.onclick = () => chrome.runtime.openOptionsPage()
-
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.from == 'cys' && request.message == 'options-loaded') {
-    let speed = Number(request.speed);
-    element.value = speed;
-    let d = document.getElementById('cys-speedDiv');
-    d.textContent = speed.toFixed(2).toString(); // `${speed}`;
-    console.log(`UI updated for speed ${speed}`);
-    sendResponse({
-      ok: true,
-      reason: `Updated UI for speed ${speed}`,
-      speed: speed
-    });
+function responseCheckOk(response) {
+  if (!response) {
+    console.error('No Response');
+    return false;;
   }
-
-  if (request.from == 'cys' && request.message == 'user-presets-load') {
-    // todo: remove this
-    // ignore this its probably fine
-    console.log('Uh Oh uncomment lines 28 to 38 in browser_action.js')
-    //   let idx = 0;
-    //   for (let preset of request.presets) {
-    //     console.log(preset);
-    //     presetButtons[idx].value = preset + 'x';
-    //     idx++;
-    //   }
-    //   sendResponse({
-    //     ok: true,
-    //     reason: `Updated UI for presets`,
-    //     presets: presets
-    //   });
-    // }
+  if (!response.ok) {
+    console.error(`Invalid Response! ${response.reason}`);
+    return false;
   }
-});
+  return true; // response is ok
+}
+
+function delayClear(element, timeout = 1000) {
+  setTimeout(function () {
+    element.innerHTML = '';
+  }, timeout);
+}
+
+// event assignments for browser action page
+keysButton.onclick = () => chrome.runtime.openOptionsPage();
 
 changePresetButton.onclick = function () {
   if (showingChangePreset) {
@@ -67,7 +53,7 @@ submitPresetsButton.onclick = function () {
   let presets = [];
   for (let presetField of presetFields) {
     let preset = presetField.value;
-    presets[idx] = preset
+    presets[idx] = preset;
     presetButtons[idx].value = preset + 'x';
     idx++;
   }
@@ -89,13 +75,10 @@ submitPresetsButton.onclick = function () {
       from: 'cys',
       message: 'update-presets',
       presets: presets
-    }, function (response) {
-      if (response) {
-        console.log("Response recevied: " + JSON.stringify(response.presets));
-      }
-    });
+    }, response => responseCheckOk(response) && console.log(`Updated presets to ${presets}`));
+
   });
-}
+};
 
 saveButton.onclick = () => {
   chrome.tabs.query({
@@ -104,38 +87,22 @@ saveButton.onclick = () => {
   }, function (tabs) {
     chrome.tabs.sendMessage(
       tabs[0].id, {
-        from: 'cys',
-        message: 'speed-save'
-      },
+      from: 'cys',
+      message: 'speed-save'
+    },
       function (response) {
         let d = document.getElementById('save-status');
-        if (response && response.ok) {
-          d.textContent = `Saved default speed as ${response.speed.toFixed(2)}`;
-        } else {
-          d.textContent = 'Error could not save!';
-        }
-        setTimeout(() => {
-          d.innerHTML = ''
-        }, 800);
+        responseCheckOk(response) ? d.textContent = `Saved default speed as ${response.speed.toFixed(2)}` : d.textContent = 'Error could not save';
+        delayClear(d);
       });
   });
 };
 
-chrome.tabs.query({
-  currentWindow: true,
-  active: true
-}, function (tabs) {
-  let tab = tabs[0];
-  chrome.tabs.sendMessage(tab.id, {
-    from: 'cys',
-    message: 'is-listening'
-  }, function (response) {
-    if (response) {
-      let listening = response.listening;
-      disableKeysButton.value = `${listening ? 'Disable' : 'Enable'} keyboard controls`;
-    }
-  });
-});
+function updateKeysEnabled(response) {
+  return responseCheckOk(response) ?
+    disableKeysButton.value = `${response.listening ? 'Disable' : 'Enable'} keyboard controls` :
+    console.error('Error could not toggle listening');
+}
 
 disableKeysButton.onclick = () => {
   chrome.tabs.query({
@@ -146,55 +113,125 @@ disableKeysButton.onclick = () => {
     chrome.tabs.sendMessage(tab.id, {
       from: 'cys',
       message: 'toggle-listening'
-    }, function (response) {
-      if (response) {
-        let listening = response.listening;
-        disableKeysButton.value = `${listening ? 'Disable' : 'Enable'} keyboard controls`;
-      }
+    }, response => updateKeysEnabled(response));
+  });
+};
+
+speedBarElement.oninput = () => {
+  let d = document.getElementById('cys-speedDiv');
+  d.textContent = speedBarElement.value;
+
+  chrome.tabs.query({
+    currentWindow: true,
+    active: true
+  }, function (tabs) {
+    chrome.tabs.sendMessage(
+      tabs[0].id, {
+      from: 'cys',
+      message: 'speed-change',
+      speed: speedBarElement.value
+    }, responseCheckOk);
+  });
+};
+
+
+// setting values for preset speed buttons
+for (let button of presetButtons) {
+  button.onclick = () => {
+    let btnValue = Number(button.value.substring(0, button.value.length - 1));
+    let d = document.getElementById('cys-speedDiv');
+    d.innerHTML = button.value;
+    speedBarElement.value = btnValue;
+    chrome.tabs.query({
+      currentWindow: true,
+      active: true
+    }, function (tabs) {
+      chrome.tabs.sendMessage(
+        tabs[0].id, {
+        from: 'cys',
+        message: 'speed-change',
+        speed: btnValue
+      }, responseCheckOk);
     });
+  };
+}
+
+// loading options from injected script
+function optionsDidLoad(speed) {
+  speed = Number(speed);
+  speedBarElement.value = speed;
+  let d = document.getElementById('cys-speedDiv');
+  d.textContent = speed.toFixed(2).toString();
+  console.log(`UI updated for speed ${speed}`);
+  sendResponse({
+    ok: true,
+    reason: `Updated UI for speed ${speed}`,
+    speed: speed
   });
 }
 
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.from == 'cys' && request.message == 'options-loaded') {
+    optionsDidLoad(request.speed);
+  }
+});
+
+// check if listening is enabled at all in injected script
+chrome.tabs.query({
+  currentWindow: true,
+  active: true
+}, function (tabs) {
+  let tab = tabs[0];
+  chrome.tabs.sendMessage(tab.id, {
+    from: 'cys',
+    message: 'is-listening'
+  }, response =>
+    updateKeysEnabled(response)
+  );
+});
+
+// determine the currently set speed in the injected script
 chrome.tabs.query({
   currentWindow: true,
   active: true
 }, function (tabs) {
   chrome.tabs.sendMessage(
     tabs[0].id, {
-      from: 'cys',
-      message: 'speed-query'
-    },
+    from: 'cys',
+    message: 'speed-query'
+  },
     function (response) {
       let d = document.getElementById('cys-speedDiv');
       if (!response || !response.ok) {
-        element.value = 0;
+        speedBarElement.value = 0;
         d.textContent = '<No Video>';
-        element.setAttribute('disabled', 'true');
+        speedBarElement.setAttribute('disabled', 'true');
       } else {
-        element.removeAttribute('disabled');
-        element.value = Number(response['current-speed'] || 1);
+        speedBarElement.removeAttribute('disabled');
+        speedBarElement.value = Number(response['current-speed'] || 1);
         d.textContent = Number(response['current-speed'] || 1).toFixed(2).toString();
       }
     });
 });
 
+// find the user defined presets in the injected script
 chrome.tabs.query({
   currentWindow: true,
   active: true
 }, function (tabs) {
   chrome.tabs.sendMessage(
     tabs[0].id, {
-      from: 'cys',
-      message: 'presets-query'
-    },
+    from: 'cys',
+    message: 'presets-query'
+  },
     function (response) {
-      if (!response) {
+      if (!response || !response.ok) {
         return;
       }
+      console.log(JSON.stringify(response));
       const {
         presets
       } = response;
-      console.log(presets);
       let idx = 0;
       for (let preset of presets) {
         console.log(preset);
@@ -204,60 +241,3 @@ chrome.tabs.query({
 
     });
 });
-
-for (let button of presetButtons) {
-  button.onclick = () => {
-    let btnValue = Number(button.value.substring(0, button.value.length - 1));
-    let d = document.getElementById('cys-speedDiv');
-    d.innerHTML = button.value;
-    element.value = btnValue;
-    chrome.tabs.query({
-      currentWindow: true,
-      active: true
-    }, function (tabs) {
-      chrome.tabs.sendMessage(
-        tabs[0].id, {
-          from: 'cys',
-          message: 'speed-change',
-          speed: btnValue
-        },
-        function (response) {
-          if (!response) {
-            console.error('No Response');
-            return;
-          }
-          if (!response.ok) {
-            console.error(`Invalid Response! ${response.reason}`);
-            return;
-          }
-        });
-    });
-  }
-}
-
-element.oninput = () => {
-  let d = document.getElementById('cys-speedDiv');
-  d.textContent = element.value;
-
-  chrome.tabs.query({
-    currentWindow: true,
-    active: true
-  }, function (tabs) {
-    chrome.tabs.sendMessage(
-      tabs[0].id, {
-        from: 'cys',
-        message: 'speed-change',
-        speed: element.value
-      },
-      function (response) {
-        if (!response) {
-          console.error('No response');
-          return;
-        }
-        if (!response.ok) {
-          console.error(`Invalid Response! ${response.reason}`);
-          return;
-        }
-      });
-  });
-};

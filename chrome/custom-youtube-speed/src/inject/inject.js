@@ -5,6 +5,14 @@ function toArray(htmlCollection) {
 let prevdef;
 let stopprop;
 let allowintext;
+let speedSetting = 1.0;
+let listening = true;
+let child;
+let timeout;
+let bindings;
+
+const successKeys = (reason) => { return { from: 'cys', ok: true, reason }; };
+const failKeys = (reason) => { return { from: 'cys', ok: false, reason }; };
 
 const defaultPresets = ['1', '2', '2.25', '2.5', '2.75', '3', '3.5'];
 
@@ -31,68 +39,75 @@ const optionsDescriptions = {
   'pause': 'Start and stop the video'
 };
 
+class StorageKeys {
+  static CYS_USER_PRESETS_KEY = 'cys-user-presets';
+  static CYS_DEFAULT_SPEED_KEY = 'cys-default-speed';
+  static CYS_KEY_LISTEN_KEY = 'cys-key-listen-key';
+  static CYS_KEY_PREV_DEF = 'cys-key-prev-def';
+  static CYS_KEY_STOP_PROP = 'cys-key-stop-prop';
+  static CYS_KEY_ALLOW_IN_TEXT = 'cys-key-allow-in-text';
+}
 
-
-let speedSetting = 1.0;
-let listening = true;
-chrome.storage.sync.get({
-  'cys-key-listen': true
-}, function (items) {
-  if (typeof items['cys-key-listen'] == 'boolean') {
-    listening = items['cys-key-listen'];
+function boolOrStringToBool(bors) {
+  if (typeof bors == 'boolean') {
+    return bors;
   } else {
-    listening = items['cys-key-listen'] != 'false';
+    return bors.strip().toLowerCase() == 'true';
   }
-});
+}
 
-chrome.storage.sync.get({
-  'cys-user-presets': defaultPresets
-}, function (items) {
-  chrome.extension.sendMessage({
-    message: 'user-presets-load',
-    presets: items,
-    from: 'cys'
-  }, function (response) {
-    console.log(response);
-  });
-});
+function togglePause(videoElt) {
+  if (videoElt.paused) {
+    videoElt.play();
+  } else {
+    videoElt.pause();
+  }
+}
 
 function killEvent(event) {
   if (stopprop) event.stopImmediatePropagation();
   if (prevdef) event.preventDefault();
 }
 
-function loadDefault() {
+function keybind_matches(event, code) {
+  if (event.key == code) {
+    return true;
+  }
+
+  return event.key.toLowerCase() == code.toLowerCase();
+}
+
+function notifiyPresetButtons() {
   chrome.storage.sync.get({
-    'prevdef': false,
-    'stopprop': false,
-    'allowintext': false,
-    ...defaultOptions
+    [StorageKeys.CYS_USER_PRESETS_KEY]: defaultPresets
   }, function (items) {
-    prevdef = items.prevdef;
-    stopprop = items.stopprop;
+    chrome.extension.sendMessage({
+      ...successKeys('user-presets-load'),
+      presets: items,
+    }, function (response) {
+      console.log(response);
+    });
   });
+}
+
+function _loadUserDefaultSpeed() {
   chrome.storage.sync.get({
-    'cys-default-speed': 1
+    [StorageKeys.CYS_DEFAULT_SPEED_KEY]: 1
   }, function (items) {
-    let speed = Number(items['cys-default-speed']);
+    let speed = Number(items[StorageKeys.CYS_DEFAULT_SPEED_KEY]);
     speedSetting = speed;
     toArray(document.getElementsByTagName('video')).map((video) => {
       if (video) {
         video.playbackRate = speed;
         console.log(`Set speed to loaded default: ${speed}`);
         chrome.runtime.sendMessage({
-          message: 'options-loaded',
-          from: 'cys',
+          ...successKeys('options-loaded'),
           speed: speed
         },
           function (response) {
             if (response && response.ok) {
               console.log('UI Updated for loaded options');
             }
-            // else {
-            //   console.error(response);
-            // }
           });
       }
     });
@@ -106,15 +121,22 @@ function loadDefault() {
   });
 }
 
-function togglePause(videoElt) {
-  if (videoElt.paused) {
-    videoElt.play();
-  } else {
-    videoElt.pause();
-  }
+function loadUserSettings() {
+  chrome.storage.sync.get({
+    [StorageKeys.CYS_KEY_PREV_DEF]: false,
+    [StorageKeys.CYS_KEY_STOP_PROP]: false,
+    [StorageKeys.CYS_KEY_ALLOW_IN_TEXT]: false,
+    [StorageKeys.CYS_KEY_LISTEN_KEY]: true,
+    ...defaultOptions
+  }, function (items) {
+    prevdef = items[StorageKeys.CYS_KEY_PREV_DEF];
+    stopprop = items[StorageKeys.CYS_KEY_STOP_PROP];
+    allowintext = items[StorageKeys.CYS_KEY_ALLOW_IN_TEXT];
+    listening = boolOrStringToBool(items[StorageKeys.CYS_KEY_LISTEN_KEY]);
+    bindings = items;
+  });
+  _loadUserDefaultSpeed();
 }
-let child;
-let timeout;
 
 function showStatus(status) {
   if (!child) {
@@ -132,23 +154,6 @@ function showStatus(status) {
     timeout = null;
   }, 750);
 }
-
-function keybind_matches(event, code) {
-  if (event.key == code) {
-    return true;
-  }
-
-  return event.key.toLowerCase() == code.toLowerCase();
-}
-
-let bindings;
-get_user_settings().then(settings => {
-  bindings = settings;
-  prevdef = settings.prevdef;
-  stopprop = settings.stopprop;
-  allowintext = settings.allowintext;
-
-});
 
 function setHandler() {
   document.addEventListener('keypress', function (event) {
@@ -200,8 +205,107 @@ function setHandler() {
         }
       }
     });
-    get_user_settings().then(settings => bindings = settings);
   });
+}
+
+class EventResponder {
+
+  constructor(sendRepsonse) {
+    this.sendRepsonse = sendRepsonse;
+  }
+
+  updatePresetButtons(presets) {
+    console.log("Saving presets");
+    console.log(presets);
+    chrome.storage.sync.set({
+      [StorageKeys.CYS_USER_PRESETS_KEY]: presets
+    }, () => {
+      this.sendRepsonse({
+        ...successKeys(),
+        presets: presets
+      });
+    });
+    return true;
+  }
+
+  saveSpeed() {
+    let speed = document.getElementsByTagName('video')[0].playbackRate;
+    console.log('Attempting save with speed: ' + speed);
+    chrome.storage.sync.set({
+      [StorageKeys.CYS_DEFAULT_SPEED_KEY]: Number(speed)
+    }, () => {
+      console.log('Sending response');
+      this.sendRepsonse({
+        ...successKeys(),
+        speed: speed
+      });
+    });
+    return true;
+
+  }
+
+  gotQueryPresets() {
+    chrome.storage.sync.get({
+      [StorageKeys.CYS_USER_PRESETS_KEY]: ['1', '2', '2.25', '2.5', '2.75', '3', '3.5']
+    }, (items) => {
+      this.sendRepsonse({
+        ...successKeys(),
+        presets: items[StorageKeys.CYS_USER_PRESETS_KEY]
+      });
+    });
+    return true;
+  }
+
+  gotQuerySpeed() {
+    let video = document.getElementsByTagName('video')[0];
+    if (video) {
+      this.sendRepsonse({
+        ...successKeys(),
+        'current-speed': video.playbackRate
+      });
+    } else {
+      this.sendRepsonse({
+        ...failKeys('No video element found')
+      });
+    }
+  }
+
+  changeSpeedTo(speed) {
+    speedSetting = speed;
+    let videos = document.getElementsByTagName('video');
+    if (!videos) {
+      this.sendRepsonse({
+        ...failKeys('No video element found')
+      });
+    } else {
+      for (let video of videos) video.playbackRate = speed;
+      this.sendRepsonse({
+        ...successKeys(),
+      });
+    }
+  }
+
+  toggleListening() {
+    listening = !listening;
+    // already negated
+    chrome.storage.sync.set({
+      [StorageKeys.CYS_KEY_LISTEN_KEY]: listening
+    }, () => {
+      console.log("Toggled keylistening");
+      this.sendRepsonse({
+        ...successKeys('Toggled listening'),
+        listening: listening,
+      });
+    });
+    return true;
+  }
+
+  gotQueryListening() {
+    this.sendRepsonse({
+      ...successKeys('Listening status'),
+      listening: listening,
+    });
+  }
 }
 
 chrome.extension.sendMessage({}, function (response) {
@@ -210,98 +314,34 @@ chrome.extension.sendMessage({}, function (response) {
   var readyStateCheckInterval = setInterval(function () {
     if (document.readyState === 'complete') {
       clearInterval(readyStateCheckInterval);
-      loadDefault();
+      loadUserSettings();
+      notifiyPresetButtons();
 
-      chrome.runtime.onMessage.addListener(function (
-        request, sender, sendRepsonse) {
-        if (request.from === 'cys' && request.message === 'is-listening') {
-          sendRepsonse({
-            status: 'ok',
-            listening: listening,
-            message: 'Listening status'
-          });
-        }
-        if (request.from === 'cys' && request.message === 'toggle-listening') {
-          listening = !listening;
-          // already negated
-          chrome.storage.sync.set({
-            'cys-key-listen': listening
-          }, function () {
-            console.log("Toggled keylistening");
-            sendRepsonse({
-              status: 'ok',
-              listening: listening,
-              message: 'Toggled listening'
-            });
-          });
-          return true;
-        }
-        if (request.from === 'cys' && request.message === 'speed-change') {
-          let speed = Number(request.speed);
-          speedSetting = speed;
-          let videos = document.getElementsByTagName('video');
-          if (!videos) {
-            sendRepsonse({
-              ok: false,
-              reason: 'Video element not found'
-            });
-          } else {
-            for (let video of videos) video.playbackRate = speed;
-            sendRepsonse({
-              ok: true
-            });
+      chrome.runtime.onMessage.addListener(function (request, sender, sendRepsonse) {
+        if (request.from === 'cys') {
+          let responder = new EventResponder(sendRepsonse);
+          if (request.message === 'is-listening') {
+            return responder.gotQueryListening();
           }
-        }
-        if (request.from === 'cys' && request.message === 'speed-query') {
-          let video = document.getElementsByTagName('video')[0];
-          if (video) {
-            sendRepsonse({
-              ok: true,
-              'current-speed': video.playbackRate
-            });
-          } else {
-            sendRepsonse({
-              ok: false,
-              reason: 'No video element found'
-            });
+          if (request.message === 'toggle-listening') {
+            return responder.toggleListening();
           }
-        }
-        if (request.from === 'cys' && request.message === 'presets-query') {
-          chrome.storage.sync.get({
-            'cys-user-presets': ['1', '2', '2.25', '2.5', '2.75', '3', '3.5']
-          }, function (items) {
-            sendRepsonse({
-              presets: items['cys-user-presets']
-            });
-          });
-          return true;
-        }
-        if (request.from === 'cys' && request.message === 'speed-save') {
-          let speed = document.getElementsByTagName('video')[0].playbackRate;
-          console.log('Attempting save');
-          chrome.storage.sync.set({
-            'cys-default-speed': Number(speed)
-          }, function () {
-            console.log('Sending response');
-            sendRepsonse({
-              ok: true,
-              speed: speed
-            });
-          });
-          return true;
-        }
-        if (request.from === 'cys' && request.message === 'update-presets') {
-          console.log("Saving presets");
-          console.log(request.presets);
-          chrome.storage.sync.set({
-            'cys-user-presets': request.presets
-          }, function () {
-            sendRepsonse({
-              ok: true,
-              presets: request.presets
-            });
-          });
-          return true;
+          if (request.message === 'speed-change') {
+            let speed = Number(request.speed);
+            return responder.changeSpeedTo(speed);
+          }
+          if (request.message === 'speed-query') {
+            return responder.gotQuerySpeed();
+          }
+          if (request.message === 'presets-query') {
+            return responder.gotQueryPresets();
+          }
+          if (request.message === 'speed-save') {
+            return responder.saveSpeed();
+          }
+          if (request.message === 'update-presets') {
+            return responder.updatePresetButtons(request.presets);
+          }
         }
       });
 
@@ -309,16 +349,3 @@ chrome.extension.sendMessage({}, function (response) {
     }
   }, 10);
 });
-
-function get_user_settings() {
-  return new Promise((res, rej) => {
-    chrome.storage.sync.get({
-      ...defaultOptions,
-      stopprop: false,
-      prevdef: false,
-      allowintext: false
-    }, function (items) {
-      res(items);
-    });
-  });
-}

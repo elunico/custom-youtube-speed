@@ -1,31 +1,5 @@
 function toLetter(code) {
-  // let v = String.fromCharCode(code).toLowerCase();
-  // if ('abcdefghjiklmnopqrstuvwxyz1234567890!@#$%^&*()_+-=[]{};\':"<>,.?/\\|`~"'.includes(v)) {
-  //   return v;
-  // } else {
-  //   let result = {
-  //     32: 'space',
-  //     16: 'shift',
-  //     13: 'enter',
-  //     27: 'escape',
-  //     17: 'control',
-  //     8: 'backspace',
-  //     91: 'command/win',
-  //     18: 'option/alt',
-  //     37: 'left',
-  //     38: 'up',
-  //     39: 'right',
-  //     40: 'down',
-  //     36: 'home',
-  //     35: 'end',
-  //     34: 'page up',
-  //     35: 'page down'
-  //   } [code]
-
-  //   if (result) return `<${result}>`;
-  //   else return '<???>';
   return code;
-
 }
 
 function killEvent(event) {
@@ -43,12 +17,6 @@ function generateTableContent() {
     row['data-action-name'] = action;
     row['data-listening'] = false;
     row.tabIndex = '-1';
-    // let enabled = document.createElement('td');
-    // enabled.className = 'enable'
-    // let checkbox = document.createElement('input');
-    // checkbox.id = `check-${action}`;
-    // checkbox.checked = true // todo: fill this in
-    // checkbox.type = 'checkbox';
 
     let set = document.createElement('td');
     let button = document.createElement('input');
@@ -87,11 +55,6 @@ function generateTableContent() {
     codein.value = value;
     code.appendChild(codein);
 
-
-
-    // enabled.appendChild(checkbox);
-
-    // row.appendChild(enabled);
     row.appendChild(explanation);
     row.appendChild(set);
     row.appendChild(code);
