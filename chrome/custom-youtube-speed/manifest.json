@@ -1,6 +1,6 @@
 {
   "name": "Custom Video Speed for YouTube™",
-  "version": "7.1.0",
+  "version": "8.0.0",
   "manifest_version": 3,
   "description": "change the current & default speed of YouTube™ videos by steps of 0.1 from 0.1 up to 8.0 using sliders, buttons, and/or the keyboard",
   "homepage_url": "https://github.com/elunico/custom-youtube-speed",
