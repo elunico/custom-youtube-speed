@@ -52,7 +52,7 @@ browser.storage.sync.get({
 browser.storage.sync.get({
   'cys-user-presets': defaultPresets
 }, function (items) {
-  browser.extension.sendMessage({
+  chrome.runtime.sendMessage({
     message: 'user-presets-load',
     presets: items,
     from: 'cys'

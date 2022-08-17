@@ -81,7 +81,7 @@ function notifiyPresetButtons() {
   chrome.storage.sync.get({
     [StorageKeys.CYS_USER_PRESETS_KEY]: defaultPresets
   }, function (items) {
-    chrome.extension.sendMessage({
+    chrome.runtime.sendMessage({
       ...successKeys('user-presets-load'),
       presets: items,
     }, function (response) {
@@ -308,7 +308,7 @@ class EventResponder {
   }
 }
 
-chrome.extension.sendMessage({}, function (response) {
+chrome.runtime.sendMessage({}, function (response) {
   setHandler();
 
   var readyStateCheckInterval = setInterval(function () {
