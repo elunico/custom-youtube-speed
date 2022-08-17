@@ -2,3 +2,4 @@
 *.pem
 *.zip
 .DS_STORE
+.idea
