@@ -1,3 +1,12 @@
+9.0.0 UPDATE!
+This is a major update that introduces a new feature: the detection of music videos! The extension now has an option to detect music videos and reset speed to 1 if it does. This only works for music from official YouTube™ Music channels (the ones with the little music note by the artist name). By default this is disabled so as not to disrupt the typical experience but it can be turned on in the options page!
+
+8.0.0 UPDATE!
+There are no major User-facing changes in this update, however the extension now uses Manifest v3. This is necessary because Google will soon remove support for Manifest v2 from Chrome. No features or options should change and this update should be entirely transparent.
+
+7.0.0 UPDATE!
+Text fields no longer mess with the extension's functionality. By default, when typing text on a webpage, the extension will ignore your hot keys so the speed doesn't change, and you can write comments in peace! You can still turn this option back on if, for some reason, you like changing speed while typing in the options page.
+
 6.1.2 UPDATE!
 Replaced Icon and text due to guidelines
 

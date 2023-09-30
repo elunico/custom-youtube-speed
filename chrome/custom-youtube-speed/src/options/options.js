@@ -31,7 +31,7 @@ function generateTableContent() {
       button.blur();
       row.focus();
     };
-    row.onkeypress = function (event) {
+    row.onkeydown = function (event) {
       console.log(event);
       if (row['data-listening']) {
         console.log(event.key);
@@ -74,6 +74,7 @@ function save_options() {
   options.allowintext = document.getElementById('allowintext').checked;
   options.stopprop = document.getElementById('stopprop').checked;
   options.prevdef = document.getElementById('prevdef').checked;
+  options.musiccheck = document.getElementById('musiccheck').checked;
   console.log(options);
   chrome.storage.sync.set(options, function () {
     // Update status to let user know options were saved.
@@ -92,15 +93,18 @@ function restore_options() {
     ...defaults,
     prevdef: false,
     stopprop: false,
-    allowintext: false
+    allowintext: false,
+    musiccheck: false,
   }, function (items) {
     document.getElementById('prevdef').checked = items.prevdef;
     document.getElementById('stopprop').checked = items.stopprop;
     document.getElementById('allowintext').checked = items.allowintext;
+    document.getElementById('musiccheck').checked = items.musiccheck;
     // global in inject.js needed for there
     prevdef = items.prevdef;
     stopprop = items.stopprop;
     allowintext = items.allowintext;
+    musiccheck = items.musiccheck;
     console.log(items);
     for (let key of Object.keys(items)) {
       console.log(`code-${key}`);
