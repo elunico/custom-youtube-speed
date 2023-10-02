@@ -1,30 +1,4 @@
 function toLetter(code) {
-  // let v = String.fromCharCode(code).toLowerCase();
-  // if ('abcdefghjiklmnopqrstuvwxyz1234567890!@#$%^&*()_+-=[]{};\':"<>,.?/\\|`~"'.includes(v)) {
-  //   return v;
-  // } else {
-  //   let result = {
-  //     32: 'space',
-  //     16: 'shift',
-  //     13: 'enter',
-  //     27: 'escape',
-  //     17: 'control',
-  //     8: 'backspace',
-  //     91: 'command/win',
-  //     18: 'option/alt',
-  //     37: 'left',
-  //     38: 'up',
-  //     39: 'right',
-  //     40: 'down',
-  //     36: 'home',
-  //     35: 'end',
-  //     34: 'page up',
-  //     35: 'page down'
-  //   } [code]
-
-  //   if (result) return `<${result}>`;
-  //   else return '<???>';
-  // }
   return code;
 }
 
@@ -43,12 +17,6 @@ function generateTableContent() {
     row['data-action-name'] = action;
     row['data-listening'] = false;
     row.tabIndex = '-1';
-    // let enabled = document.createElement('td');
-    // enabled.className = 'enable'
-    // let checkbox = document.createElement('input');
-    // checkbox.id = `check-${action}`;
-    // checkbox.checked = true // todo: fill this in
-    // checkbox.type = 'checkbox';
 
     let set = document.createElement('td');
     let button = document.createElement('input');
@@ -87,11 +55,6 @@ function generateTableContent() {
     codein.value = value;
     code.appendChild(codein);
 
-
-
-    // enabled.appendChild(checkbox);
-
-    // row.appendChild(enabled);
     row.appendChild(explanation);
     row.appendChild(set);
     row.appendChild(code);
@@ -111,6 +74,7 @@ function save_options() {
   options.allowintext = document.getElementById('allowintext').checked;
   options.stopprop = document.getElementById('stopprop').checked;
   options.prevdef = document.getElementById('prevdef').checked;
+  options.musiccheck = document.getElementById('musiccheck').checked;
   console.log(options);
   chrome.storage.sync.set(options, function () {
     // Update status to let user know options were saved.
@@ -129,15 +93,18 @@ function restore_options() {
     ...defaults,
     prevdef: false,
     stopprop: false,
-    allowintext: false
+    allowintext: false,
+    musiccheck: false,
   }, function (items) {
     document.getElementById('prevdef').checked = items.prevdef;
     document.getElementById('stopprop').checked = items.stopprop;
     document.getElementById('allowintext').checked = items.allowintext;
+    document.getElementById('musiccheck').checked = items.musiccheck;
     // global in inject.js needed for there
     prevdef = items.prevdef;
     stopprop = items.stopprop;
     allowintext = items.allowintext;
+    musiccheck = items.musiccheck;
     console.log(items);
     for (let key of Object.keys(items)) {
       console.log(`code-${key}`);
@@ -147,6 +114,7 @@ function restore_options() {
     }
   });
 }
+
 
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById('save').addEventListener('click',

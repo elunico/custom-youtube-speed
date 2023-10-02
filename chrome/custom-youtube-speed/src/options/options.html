@@ -36,9 +36,7 @@
       font-size: 1.1rem;
       border: 2px solid gray;
       margin: 0.2em;
-
-
-
+      padding: 0.5em 0.5em;
     }
 
     thead {
@@ -50,8 +48,6 @@
       border: 1px solid gray;
       width: 45%
     }
-
-
 
     td.short {
       border: 1px solid gray;
@@ -121,10 +117,13 @@
         </tr>
       </thead>
       <tbody>
-
       </tbody>
     </table>
-
+    <p class="note">
+      The <code>key</code> column refers to the <code>event.key</code> property of the JavaScript event when a key is
+      struck. You can put whatever value you like here, but be warned, if another part of the website intercepts the
+      invent, this might not work. It is therefore recommended to use the <code>set key</code> button.
+    </p>
     <br>
 
     <div class="main">
@@ -152,27 +151,24 @@
     </div>
   </div>
   <br>
+
+  <div class="main">
+    <h2 style="color: darkyellow;">☢️ Experimental ☢️</h2>
+    <div class="instructions">
+      This setting will attempt to check whether the video playing a music video and automatically set speed back to 1
+      if
+      it is.
+      This is a fragile check and is likely to break in the future without warning.
+      <br><br>
+      <input type="checkbox" name="music-check" id="musiccheck">
+      <label for="music-check">Automatically set music video speed to 1</label>
+      <br><br>
+    </div>
+  </div>
+  <br>
+  <br>
   <button id="save">Save</button>
   <div class="instructions" id="status"></div>
-  <br>
-  <br>
-
-  <h2 style="color: darkyellow;">☢️ Experimental ☢️</h2>
-  <p class="note">
-    If you would like to use a troublesome key, you may manually enter the <code>key</code> property for the JavaScript
-    Event value for it. If you don't know what this means, you can skip reading this section, just use the
-    button and the keys you want and watch out for the built-in YouTube shortcuts.
-  </p>
-  <p class="note">
-
-    You can use <a href="https://eluni.co/projects/keycodechecker/">this website</a> to discover the
-    <code>key</code> attribute of
-    striking any key on the keyboard. Be warned that <strong>there is no guarantee that keys manually entered using
-      <code>key</code> will actually work</strong> but it is possible to try. Simply copy paste the output to the
-    box
-
-  </p>
-
 
   <script src="../common/default-options.js"></script>
   <script src="../common/description-options.js"></script>

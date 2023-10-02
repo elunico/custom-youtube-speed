@@ -2,7 +2,7 @@
 <style type="text/css">
 	#mainPopup {
 		padding: 10px;
-		height: 350px;
+		height: 300px;
 		width: 400px;
 		font-family: "Helvetica Neue", "Helvetica", "Segoe UI", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	}
@@ -19,7 +19,6 @@
 	input {
 		font-family: "Helvetica Neue", "Helvetica", "Segoe UI", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	}
-
 
 	.bottom-buttons {
 		display: flex;
@@ -63,7 +62,7 @@
 		</p>
 	</div>
 	</p>
-	<p>
+	<p style="align-items: center; display: flex;">
 		<span class="mno">0.1</span><input name="cys-speedRange" id="cys-speedRange" style="width: 80%;" type="range"
 			min="0.1" max=8 step="0.1" /><span class="mno">8.0</span>
 	</p>
@@ -73,8 +72,8 @@
 			value="Set this speed as default" />
 		<input type="button" id="btn-disable-keys" style="width: 45%; text-align: center;"
 			value="Disable keyboard controls" />
-
 	</p>
+
 	<p class="bottom-buttons"><input type="button" id="btn-keybindings" style="width: 45%; text-align: center;"
 			value="Edit Options and Keys..."></p>
 	<p id="save-status"></p>

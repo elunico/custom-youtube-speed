@@ -5,7 +5,9 @@ function toArray(htmlCollection) {
 let prevdef;
 let stopprop;
 let allowintext;
+let musiccheck;
 let speedSetting = 1.0;
+let speedWasSet = false;
 let listening = true;
 let child;
 let timeout;
@@ -36,16 +38,17 @@ const optionsDescriptions = {
   'big-slow-down': 'Slow down by <code>1.0x</code>',
   'speed-modifier': 'Multiplies all speed increments by <code>1/2</code>',
   'reset-speed': 'Set speed to <code>1.0x</code>',
-  'pause': 'Start and stop the video'
+  'pause': 'Start and stop the video',
 };
 
 class StorageKeys {
   static CYS_USER_PRESETS_KEY = 'cys-user-presets';
   static CYS_DEFAULT_SPEED_KEY = 'cys-default-speed';
   static CYS_KEY_LISTEN_KEY = 'cys-key-listen-key';
-  static CYS_KEY_PREV_DEF = 'cys-key-prev-def';
-  static CYS_KEY_STOP_PROP = 'cys-key-stop-prop';
-  static CYS_KEY_ALLOW_IN_TEXT = 'cys-key-allow-in-text';
+  static CYS_KEY_PREV_DEF = 'prevdef';
+  static CYS_KEY_STOP_PROP = 'stopprop';
+  static CYS_KEY_ALLOW_IN_TEXT = 'allowintext';
+  static CYS_MUSIC_CHECK = 'musiccheck';
 }
 
 function boolOrStringToBool(bors) {
@@ -90,34 +93,58 @@ function notifiyPresetButtons() {
   });
 }
 
+function setVideosSpeed(speed) {
+  speedSetting = speed;
+  toArray(document.getElementsByTagName('video')).map((video) => {
+    if (video) {
+      video.playbackRate = speedSetting;
+    }
+  });
+}
+
+function userOverrideDefaultSpeed(speed) {
+  speedWasSet = true;
+  setVideosSpeed(speed);
+}
+
+function reportLoaded() {
+  chrome.runtime.sendMessage({
+    ...successKeys('options-loaded'),
+    speed: speedSetting
+  },
+    function (response) {
+      if (response && response.ok) {
+        console.log('UI Updated for loaded options');
+      }
+    });
+}
+
 function _loadUserDefaultSpeed() {
   chrome.storage.sync.get({
     [StorageKeys.CYS_DEFAULT_SPEED_KEY]: 1
   }, function (items) {
     let speed = Number(items[StorageKeys.CYS_DEFAULT_SPEED_KEY]);
-    speedSetting = speed;
-    toArray(document.getElementsByTagName('video')).map((video) => {
-      if (video) {
-        video.playbackRate = speed;
-        console.log(`Set speed to loaded default: ${speed}`);
-        chrome.runtime.sendMessage({
-          ...successKeys('options-loaded'),
-          speed: speed
-        },
-          function (response) {
-            if (response && response.ok) {
-              console.log('UI Updated for loaded options');
-            }
-          });
-      }
-    });
-    setInterval(() => {
-      toArray(document.getElementsByTagName('video')).map((video) => {
-        if (video) {
-          video.playbackRate = speedSetting;
+    function local() {
+      elts = document.querySelectorAll('#upload-info ytd-badge-supported-renderer.ytd-channel-name');
+      for (let elt of elts) {
+        let child = elt.querySelector('*[aria-label="Official Artist Channel"]');
+        if (child && musiccheck) {
+          setVideosSpeed(speedWasSet ? speedSetting : 1);
+          reportLoaded();
+          return true;
         }
-      });
-    }, 350);
+      }
+      setVideosSpeed(speedWasSet ? speedSetting : speed);
+      reportLoaded();
+      return false;
+    }
+
+    let interval = setInterval(() => {
+      local();
+    }, 250);
+
+
+    return true;
   });
 }
 
@@ -127,15 +154,19 @@ function loadUserSettings() {
     [StorageKeys.CYS_KEY_STOP_PROP]: false,
     [StorageKeys.CYS_KEY_ALLOW_IN_TEXT]: false,
     [StorageKeys.CYS_KEY_LISTEN_KEY]: true,
+    [StorageKeys.CYS_MUSIC_CHECK]: false,
     ...defaultOptions
   }, function (items) {
     prevdef = items[StorageKeys.CYS_KEY_PREV_DEF];
     stopprop = items[StorageKeys.CYS_KEY_STOP_PROP];
     allowintext = items[StorageKeys.CYS_KEY_ALLOW_IN_TEXT];
+    console.log(`loaded value ${items[StorageKeys.CYS_MUSIC_CHECK]}`);
+    musiccheck = boolOrStringToBool(items[StorageKeys.CYS_MUSIC_CHECK]);
     listening = boolOrStringToBool(items[StorageKeys.CYS_KEY_LISTEN_KEY]);
     bindings = items;
   });
   _loadUserDefaultSpeed();
+  return true;
 }
 
 function showStatus(status) {
@@ -179,7 +210,7 @@ function setHandler() {
           togglePause(video);
           killEvent(event);
         } else if (keybind_matches(event, (bindings['reset-speed']))) {
-          speedSetting = 1;
+          userOverrideDefaultSpeed(1);
           video.playbackRate = 1;
           showStatus(video.playbackRate);
           killEvent(event);
@@ -197,8 +228,9 @@ function setHandler() {
         }
         if (rateChange != 0) {
           if (((video.playbackRate + rateChange) <= 8.0) && ((video.playbackRate + rateChange) >= 0.1)) {
-            video.playbackRate += rateChange;
-            speedSetting = video.playbackRate;
+            // video.playbackRate += rateChange;
+            console.log(`speed is ${video.playbackRate} and is about to be ${video.playbackRate + rateChange}`);
+            userOverrideDefaultSpeed(video.playbackRate + rateChange);
           }
           killEvent(event);
           showStatus(video.playbackRate);
@@ -271,14 +303,15 @@ class EventResponder {
   }
 
   changeSpeedTo(speed) {
-    speedSetting = speed;
+    userOverrideDefaultSpeed(speed);
     let videos = document.getElementsByTagName('video');
     if (!videos) {
       this.sendRepsonse({
         ...failKeys('No video element found')
       });
     } else {
-      for (let video of videos) video.playbackRate = speed;
+      // for (let video of videos) video.playbackRate = speed;
+      setVideosSpeed(speed);
       this.sendRepsonse({
         ...successKeys(),
       });
@@ -315,6 +348,8 @@ chrome.runtime.sendMessage({}, function (response) {
     if (document.readyState === 'complete') {
       clearInterval(readyStateCheckInterval);
       loadUserSettings();
+      console.log(`music check is ${musiccheck}`);
+      console.log(speedSetting);
       notifiyPresetButtons();
 
       chrome.runtime.onMessage.addListener(function (request, sender, sendRepsonse) {
@@ -348,4 +383,5 @@ chrome.runtime.sendMessage({}, function (response) {
       console.log('Listener ready!');
     }
   }, 10);
+  return true;
 });
